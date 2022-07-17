@@ -28,22 +28,16 @@ contract SwapTokenForToken {
         address _to
     ) external {
         // 1. user deposits a token into this contract(pool)
-        require(IERC20(_tokenIn).transferFrom(msg.sender, address(this), _amountIn));
+        IERC20(_tokenIn).transferFrom(msg.sender, address(this), _amountIn);
 
         // 2. user approves uniswap rotuer to spend the token
-        require(IERC20(_tokenIn).approve(UNISWAP_VER2_ROUTER_02, _amountIn));
+        IERC20(_tokenIn).approve(UNISWAP_VER2_ROUTER_02, _amountIn);
 
         address[] memory path = new address[](3);
         path[0] = _tokenIn;
-        path[1] = WETH_ROPSTEN;
+        path[1] = WETH_MAINNET;
         path[2] = _tokenOut;
 
-        IUniswapV2Router02(UNISWAP_VER2_ROUTER_02).swapExactTokensForTokensSupportingFeeOnTransferTokens(
-            _amountIn,
-            _amountOutMin,
-            path,
-            _to,
-            block.timestamp
-        );
+        IUniswapV2Router02(UNISWAP_VER2_ROUTER_02).swapExactTokensForTokens(_amountIn, _amountOutMin, path, _to, block.timestamp);
     }
 }
