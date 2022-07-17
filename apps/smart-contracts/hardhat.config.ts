@@ -8,11 +8,22 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
+import helper from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config({ path: "./.env.development" });
 
+const options = {
+  settings: {
+    optimizer: {
+      enabled: true,
+      runs: 800,
+    },
+    evmVersion: "london",
+  },
+};
+
 const config: HardhatUserConfig = {
-  defaultNetwork: "hardhat", // dev network is hardhat
+  // defaultNetwork: "hardhat", // dev network is hardhat
   solidity: {
     // version: "0.8.0",
     // set multiple compiler version
@@ -20,22 +31,13 @@ const config: HardhatUserConfig = {
       { version: "0.8.0" },
       {
         version: "0.8.15",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 800,
-          },
-          evmVersion: "london",
-        },
       },
-    ],
-    // settings: {
-    //   optimizer: {
-    //     enabled: true,
-    //     runs: 800,
-    //   },
-    //   evmVersion: "london", // default value managed by solc
-    // },
+    ].map((ver) => {
+      return {
+        ...ver,
+        ...options,
+      };
+    }),
   },
   networks: {
     // JSON-RPC based network
@@ -56,6 +58,12 @@ const config: HardhatUserConfig = {
         process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined
           ? [process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY]
           : [],
+    },
+    hardhat: {
+      forking: {
+        url: String(process.env.FOLK_MAINNET_URL), // alchemy node assist an archived data caching
+        blockNumber: 14390000,
+      },
     },
   },
   paths: {
