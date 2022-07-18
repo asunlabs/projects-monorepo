@@ -1,9 +1,11 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
 import SwapTokenForToken from "./SwapTokenForToken.json";
 import IERC20 from "./IERC20.json";
+import { ethers } from "hardhat";
+import helpers from "@nomicfoundation/hardhat-network-helpers";
 
-describe("asdf", function () {
+// import {get} from 'ethers'
+describe("test network helper", function () {
   const AMOUNT_IN = 10;
   const AMOUNT_OUT_MIN = 1;
   const TOKEN_IN = "0x31F42841c2db5173425b5223809CF3A38FEde360";
@@ -14,5 +16,12 @@ describe("asdf", function () {
     // const iERC20 = await IERC20.deployed();
     // await iERC20.deployed();
     expect("DAI").to.equal("DAI");
+  });
+  it("Impersonate DAI whale", async function () {
+    const address = "0x1B7BAa734C00298b9429b518D621753Bb0f6efF2";
+    // const provider = new ethers.providers.InfuraProvider();
+    // await helpers.impersonateAccount(address);
+    // const signer = provider.getSigner(address);
+    // console.log(await signer.getBalance());
   });
 });
