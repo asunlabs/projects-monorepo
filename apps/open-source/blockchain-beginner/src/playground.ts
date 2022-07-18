@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { BlockModule } from "./modules/block";
+import { BlockModule } from "./modules/blockmodule";
 import type { BlockProps } from "./types";
 
 console.log(CryptoJS.SHA256("hash me").toString());
