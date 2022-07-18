@@ -8,5 +8,12 @@
     "experimentalDecorators": true,
     "strict": true,
     "skipLibCheck": true
-  }
+  },
+  "include": [
+    "./scripts/**/*",
+    "./test/*.test.ts"
+  ],
+  "files": [
+    "./hardhat.config.ts"
+  ]
 }

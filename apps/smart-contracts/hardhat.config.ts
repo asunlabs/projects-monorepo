@@ -8,7 +8,7 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
-import helper from "@nomicfoundation/hardhat-network-helpers";
+import helpers from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config({ path: "./.env.development" });
 
@@ -18,7 +18,7 @@ const options = {
       enabled: true,
       runs: 800,
     },
-    evmVersion: "london",
+    // evmVersion: "london",
   },
 };
 
@@ -27,12 +27,7 @@ const config: HardhatUserConfig = {
   solidity: {
     // version: "0.8.0",
     // set multiple compiler version
-    compilers: [
-      { version: "0.8.0" },
-      {
-        version: "0.8.15",
-      },
-    ].map((ver) => {
+    compilers: [{ version: "0.6.6" }, { version: "0.8.0" }, { version: "0.8.15" }].map((ver) => {
       return {
         ...ver,
         ...options,
@@ -42,29 +37,19 @@ const config: HardhatUserConfig = {
   networks: {
     // JSON-RPC based network
     ropsten: {
-      url: process.env.TEST_ROPSTEN_URL
-        ? String(process.env.TEST_ROPSTEN_URL)
-        : undefined,
-      accounts:
-        process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY !== undefined
-          ? [process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY]
-          : [],
+      url: process.env.TEST_ROPSTEN_URL ? String(process.env.TEST_ROPSTEN_URL) : "",
+      accounts: process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY !== undefined ? [process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY] : [],
     },
     mainnet: {
-      url: process.env.MAIN_ETHEREUM_URL
-        ? String(process.env.MAIN_ETHEREUM_URL)
-        : undefined,
-      accounts:
-        process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined
-          ? [process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY]
-          : [],
+      url: process.env.MAIN_ETHEREUM_URL ? String(process.env.MAIN_ETHEREUM_URL) : "",
+      accounts: process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined ? [process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY] : [],
     },
-    hardhat: {
-      forking: {
-        url: String(process.env.FOLK_MAINNET_URL), // alchemy node assist an archived data caching
-        blockNumber: 14390000,
-      },
-    },
+    // hardhat: {
+    //   forking: {
+    //     url: String(process.env.FOLK_MAINNET_URL), // alchemy node assist an archived data caching
+    //     blockNumber: 14390000,
+    //   },
+    // },
   },
   paths: {
     artifacts: "./artifacts",
@@ -73,17 +58,15 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   gasReporter: {
-    enabled: process.env.PLUGIN_REPORT_GAS ? true : false,
-    coinmarketcap: process.env.API_COINMARKETCAP_KEY, // for gas reporter
+    enabled: Boolean(process.env.PLUGIN_REPORT_GAS) ? true : false,
+    coinmarketcap: String(process.env.API_COINMARKETCAP_KEY), // for gas reporter
     currency: "USD",
     src: "./contracts",
     outputFile: "./byproducts",
   },
   etherscan: {
     apiKey: {
-      ropsten: process.env.API_ETHERSCAN_KEY
-        ? process.env.API_ETHERSCAN_KEY
-        : undefined,
+      ropsten: process.env.API_ETHERSCAN_KEY ? String(process.env.API_ETHERSCAN_KEY) : "",
     },
   },
   mocha: {

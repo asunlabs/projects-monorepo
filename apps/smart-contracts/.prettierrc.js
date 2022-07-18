@@ -7,5 +7,11 @@ module.exports = {
         printWidth: 150,
       },
     },
+    {
+      files: "*.{js,ts}",
+      options: {
+        printWidth: 150,
+      },
+    },
   ],
 };
