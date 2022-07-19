@@ -2,9 +2,7 @@ const { hre, ethers } = require("hardhat");
 
 async function main() {
   // await hre.ether => fix ethers
-  const SwapTokenForToken = await ethers.getContractFactory(
-    "SwapTokenForToken"
-  );
+  const SwapTokenForToken = await ethers.getContractFactory("ERC20Mock");
   const swapTokenForToken = await SwapTokenForToken.deploy();
 
   await swapTokenForToken.deployed();
