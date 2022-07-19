@@ -23,11 +23,15 @@ const options = {
 };
 
 const config: HardhatUserConfig = {
-  // defaultNetwork: "hardhat", // dev network is hardhat
+  defaultNetwork: "hardhat", // dev network is hardhat
   solidity: {
     // version: "0.8.0",
     // set multiple compiler version
-    compilers: [{ version: "0.6.6" }, { version: "0.8.0" }, { version: "0.8.15" }].map((ver) => {
+    compilers: [
+      { version: "0.6.6" },
+      { version: "0.8.0" },
+      { version: "0.8.15" },
+    ].map((ver) => {
       return {
         ...ver,
         ...options,
@@ -37,19 +41,32 @@ const config: HardhatUserConfig = {
   networks: {
     // JSON-RPC based network
     ropsten: {
-      url: process.env.TEST_ROPSTEN_URL ? String(process.env.TEST_ROPSTEN_URL) : "",
-      accounts: process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY !== undefined ? [process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY] : [],
+      url: process.env.TEST_ROPSTEN_URL
+        ? String(process.env.TEST_ROPSTEN_URL)
+        : "",
+      accounts:
+        process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY !== undefined
+          ? [process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY]
+          : [],
     },
     mainnet: {
-      url: process.env.MAIN_ETHEREUM_URL ? String(process.env.MAIN_ETHEREUM_URL) : "",
-      accounts: process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined ? [process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY] : [],
+      url: process.env.MAIN_ETHEREUM_URL
+        ? String(process.env.MAIN_ETHEREUM_URL)
+        : "",
+      accounts:
+        process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined
+          ? [process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY]
+          : [],
     },
-    // hardhat: {
-    //   forking: {
-    //     url: String(process.env.FOLK_MAINNET_URL), // alchemy node assist an archived data caching
-    //     blockNumber: 14390000,
-    //   },
-    // },
+    hardhat: {
+      forking: {
+        url: process.env.FORK_MAINNET_URL
+          ? String(process.env.FORK_MAINNET_URL)
+          : "", // alchemy node assist an archived data caching
+        blockNumber: 14390000,
+        enabled: true,
+      },
+    },
   },
   paths: {
     artifacts: "./artifacts",
@@ -66,7 +83,9 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      ropsten: process.env.API_ETHERSCAN_KEY ? String(process.env.API_ETHERSCAN_KEY) : "",
+      ropsten: process.env.API_ETHERSCAN_KEY
+        ? String(process.env.API_ETHERSCAN_KEY)
+        : "",
     },
   },
   mocha: {

@@ -13,5 +13,11 @@ module.exports = {
         printWidth: 150,
       },
     },
+    {
+      files: "hardhat.config.ts",
+      options: {
+        printWidth: 80,
+      },
+    },
   ],
 };
