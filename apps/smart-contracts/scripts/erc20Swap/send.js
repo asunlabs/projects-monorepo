@@ -15,7 +15,7 @@ async function DeployDex() {
   if (typeof process.env.FORK_DAI_WHALE !== undefined) {
     // const provider = ethers.getImpersonatedSigner(); // workfs after mainnet fork
 
-    //
+    // FIX: gas not estimated error
     helpers.impersonateAccount(process.env.FORK_DAI_WHALE);
     const impersonateAccount = ethers.getSigner(process.env.FORK_DAI_WHALE);
     console.log((await impersonateAccount).provider._isProvider);
