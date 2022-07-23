@@ -8,7 +8,6 @@ contract Dex {
     address internal constant UNISWAP_V2_ROUTER = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
     IUniswapV2Router02 public uniswapRouter;
     address internal constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-    address internal constant USDC_ROPSTEN = 0x07865c6E87B9F70255377e024ace6630C1Eaa37F;
 
     constructor() public payable {
         uniswapRouter = IUniswapV2Router02(UNISWAP_V2_ROUTER);
@@ -22,29 +21,31 @@ contract Dex {
         uniswapRouter.swapExactETHForTokens{value: msg.value}(amountOutMin, path, msg.sender, deadline);
     }
 
-    // FIX: delete payable, change USDC ropsten address
     function swapUSDCForEth(uint256 tokenAmount) external {
         uint256 deadline = block.timestamp + 150;
         address[] memory path = getUSDCForEthPath();
         uint256 amountOutMin = uniswapRouter.getAmountsOut(tokenAmount, path)[1];
-        // IERC20(USDC).transferFrom(msg.sender, address(this), tokenAmount);
-        // IERC20(USDC).approve(UNISWAP_V2_ROUTER, tokenAmount);
-        IERC20(USDC_ROPSTEN).transferFrom(msg.sender, address(this), tokenAmount);
-        IERC20(USDC_ROPSTEN).approve(UNISWAP_V2_ROUTER, tokenAmount);
+
+        // send tokens to this contract
+        IERC20(USDC).transferFrom(msg.sender, address(this), tokenAmount);
+
+        // allow this contract to spend the tokens
+        IERC20(USDC).approve(UNISWAP_V2_ROUTER, tokenAmount);
         uniswapRouter.swapExactTokensForETH(tokenAmount, amountOutMin, path, msg.sender, deadline);
     }
 
     function getEthForUSDCPath() private view returns (address[] memory) {
         address[] memory path = new address[](2);
+        // path is required by uniswap router
         path[0] = uniswapRouter.WETH();
-        path[1] = USDC_ROPSTEN;
+        path[1] = USDC;
 
         return path;
     }
 
     function getUSDCForEthPath() private view returns (address[] memory) {
         address[] memory path = new address[](2);
-        path[0] = USDC_ROPSTEN;
+        path[0] = USDC;
         path[1] = uniswapRouter.WETH();
 
         return path;
