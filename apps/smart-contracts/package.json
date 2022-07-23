@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter list"
+    "test": "nodemon -w test --exec mocha --reporter list",
+    "test:mainnet": "nodemon -w test --exec hardhat test"
   },
   "keywords": [],
   "author": "",
@@ -26,10 +27,12 @@
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.0.4",
+    "@types/nodemon": "^1.19.2",
     "@uniswap/lib": "4.0.1-alpha",
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v2-periphery": "1.1.0-beta.0",
     "chai": "4.2.0",
+    "chalk": "4.1.2",
     "dotenv": "16.0.0",
     "eslint": "7.29.0",
     "eslint-config-prettier": "8.3.0",
@@ -42,6 +45,7 @@
     "hardhat": "2.9.9",
     "hardhat-gas-reporter": "^1.0.8",
     "mocha": "^10.0.0",
+    "nodemon": "^2.0.19",
     "solidity-coverage": "^0.7.21",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0",
