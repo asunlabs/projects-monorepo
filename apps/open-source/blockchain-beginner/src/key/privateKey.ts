@@ -1,8 +1,6 @@
 import CryptoJS from "crypto-js";
 import { v4 } from "uuid";
 
-const PATH = "../../node_modules/.bin/ts-node privateKey";
-
 const privateKeys = new Map(); // key: username, value: private key
 const publicKeys = new Map();
 const users = new Map(); // key: username, value: user id

@@ -4,6 +4,9 @@ import { createRequire } from "module";
 import chalk from "chalk";
 import CryptoJS from "crypto-js";
 
+// execute this command at src directory
+const PATH = "../../node_modules/.bin/ts-node transaction";
+
 // compare with defi amm
 const orderBook = {
   sender: "Jake",
