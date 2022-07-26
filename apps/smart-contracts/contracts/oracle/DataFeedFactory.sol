@@ -10,7 +10,7 @@ contract DataFeedFactory {
     using Counters for Counters.Counter;
     Counters.Counter private _feedId;
 
-    mapping(uint256 => AggregatorV3Interface) feeds;
+    mapping(uint256 => AggregatorV3Interface) public feeds;
 
     /**
      * Network: Kovan

@@ -3,12 +3,20 @@ import { ethers } from "hardhat";
 import { Contract } from "ethers";
 import * as helpers from "@nomicfoundation/hardhat-network-helpers";
 import USDC_ABI from "./USDC.json";
+import DAI_ABI from "./DAI.json";
 import dotenv from "dotenv";
 import chalk from "chalk";
+import hre from "hardhat";
 
 dotenv.config();
 
-const { FORK_USDC_WHALE, FORK_DAI_WHALE, FORK_USDC_MAINNET } = process.env;
+// if a token is based on proxy => contract ABI should be implementation, address should be proxy
+// FORK_DAI_WHALE:
+// 1) 25 ETH
+// 2) 155078679406831 USDC
+// 3)
+
+const { FORK_USDC_WHALE, FORK_DAI_WHALE, FORK_USDC_MAINNET, FORK_DAI_MAINNET } = process.env;
 const UNISWAP_ROUTER = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 let dex: Contract;
 
@@ -79,5 +87,28 @@ describe("Dex", function () {
     // balance should be updated after swap
     console.log(chalk.bgWhite.black.bold("after swap:"), await USDC.balanceOf(signer.address));
     console.log(chalk.bgCyan.white("after ETH: "), await signer.getBalance());
+  });
+  it("Should read the whale's DAI balance", async function TestDaiBalance() {
+    await helpers.impersonateAccount(FORK_DAI_WHALE!);
+    const signer = await ethers.getSigner(FORK_DAI_WHALE!);
+    const DAI = await ethers.getContractAt(DAI_ABI, FORK_DAI_MAINNET!);
+    expect((await DAI.balanceOf(signer.address)) / 1e18).not.to.equal(0);
+  });
+  it("Should swap ETH for USDC", async function TestDAIEthSwap() {
+    await helpers.impersonateAccount(FORK_DAI_WHALE!);
+    const signer = await ethers.getSigner(FORK_DAI_WHALE!);
+    const USDC = await ethers.getContractAt(USDC_ABI, FORK_USDC_MAINNET!);
+
+    console.log(chalk.bgGray("BEFORE SWAP: USDC"), await USDC.balanceOf(signer.address));
+    // swapEthForUSDC requires ETH value, which is entered as a parameter in ethersjs mapping.
+    await dex.connect(signer).swapEthForUSDC(ethers.utils.parseEther("1"), {
+      value: ethers.utils.parseEther("1"),
+    });
+
+    console.log(chalk.bgRed.bold("AFTER SWAP: ETH "), await signer.getBalance());
+    expect(await signer.getBalance()).closeTo(ethers.utils.parseEther("24"), ethers.utils.parseEther("1"));
+
+    console.log(chalk.bgCyan("AFTER SWAP: USDC"), await USDC.balanceOf(signer.address));
+    expect(await USDC.balanceOf(signer.address)).above(155078679406831);
   });
 });
