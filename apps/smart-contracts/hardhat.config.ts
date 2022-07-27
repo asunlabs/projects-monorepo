@@ -8,6 +8,7 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
+import "ethereum-waffle";
 import helpers from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config({ path: "./.env.development" });

@@ -10,8 +10,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "./scripts/**/*",
-    "./test/*.test.ts"
+    "./scripts",
+    "./test"
   ],
   "files": [
     "./hardhat.config.ts"
