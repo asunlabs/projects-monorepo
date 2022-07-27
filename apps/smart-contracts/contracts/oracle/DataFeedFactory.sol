@@ -22,6 +22,27 @@ contract DataFeedFactory {
 
      * Aggregator: DAI/ETH
      * Address: 0x22B58f1EbEDfCA50feF632bD73368b2FdA96D541
+     *
+     * Network: Mainnet
+     * Aggregator: ETH/USD
+     * Address: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
+     *
+     * Aggregator: USDC/ETH
+     * Address: 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4
+     *
+     * Aggregator: DAI/ETH
+     * Address: 0x773616E4d11A78F511299002da57A0a94577F1f4
+
+     * Network: Rinkeby
+     * Aggregator: ETH/USD
+     * Address: 0x8A753747A1Fa494EC906cE90E9f37563A8AF630e
+
+     * Aggregator: USDC/ETH
+     * Address: 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4
+
+     * Aggregator: DAI/ETH
+     * Address: 0x74825DbC8BF76CC4e9494d0ecB210f676Efa001D
+
      */
     function initDataFeeds(address _feed) external {
         AggregatorV3Interface feed = AggregatorV3Interface(_feed);
