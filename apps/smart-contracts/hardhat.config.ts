@@ -50,6 +50,22 @@ const config: HardhatUserConfig = {
           ? [process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY]
           : [],
     },
+    rinkeby: {
+      url: process.env.TEST_RINKEBY_URL
+        ? String(process.env.TEST_RINKEBY_URL)
+        : "",
+      accounts:
+        process.env.ACCOUNT_RINKEBY_PRIVATE_KEY !== undefined
+          ? [process.env.ACCOUNT_RINKEBY_PRIVATE_KEY]
+          : [],
+    },
+    kovan: {
+      url: process.env.TEST_KOVAN_URL ? String(process.env.TEST_KOVAN_URL) : "",
+      accounts:
+        process.env.ACCOUNT_KOVAN_PRIVATE_KEY !== undefined
+          ? [process.env.ACCOUNT_KOVAN_PRIVATE_KEY]
+          : [],
+    },
     mainnet: {
       url: process.env.MAIN_ETHEREUM_URL
         ? String(process.env.MAIN_ETHEREUM_URL)
@@ -84,9 +100,8 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      ropsten: process.env.API_ETHERSCAN_KEY
-        ? String(process.env.API_ETHERSCAN_KEY)
-        : "",
+      ropsten: process.env.API_ETHERSCAN_KEY!,
+      rinkeby: "AY9DUZFRDCYBRNQXZKTE4Y1E9R8VRIWQVA",
     },
   },
   mocha: {
