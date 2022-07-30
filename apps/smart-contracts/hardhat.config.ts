@@ -3,12 +3,12 @@ import { ethers } from "hardhat";
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-etherscan"; // for etherscan contract verification
 import "@nomiclabs/hardhat-ethers";
-import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
 import "ethereum-waffle";
+import "@nomiclabs/hardhat-waffle";
 import helpers from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config({ path: "./.env.development" });
