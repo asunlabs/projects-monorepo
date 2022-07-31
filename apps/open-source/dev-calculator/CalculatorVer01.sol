@@ -7,21 +7,20 @@ pragma solidity ^0.8.15;
 /// @notice Development schedule calculator for Junior engineers. Enter work and get total schedule.
 /// @dev This is a implementation contract. Contract architecture motivated by Chainlink Data feeds
 
-// 1. 일정 추정을 위한 일정을 만든다.
-// 1. 작업에 대한 세부 기능을 쪼갠다.
-// 1. 세부 기능에 대한 일정을 추정한다.
-// 1. 세부 기능 일정의 총합이 전체 추정 일정이다.
-// 1. 구해진 전체 일정에 x2.5를 한 후 아래 3가지 버전을 만들어 팀에게 공유한다.
-
-// 최소 일정: x1 => 100
-// 보통 일정: x2.5 => 250 
-// 최대 일정: x4 => 400
+// mode(minimum, plain, maximum) ===(set weight)===> weight(minimum, plain, maximum)
+// weight ===(set schedule)===> calculateSchedule()
+// end user ===(get schedule)===> getTotalSchedule()
 
 contract CalculatorVer01 {
 
+    uint256 public divider = 10 ** 3;
     uint256 private immutable _decimals = 10 ** 2;
+    uint256 private immutable MINIMUM_WEIGHT = 10;
+    uint256 private immutable PLAIN_WEIGHT = 25;
+    uint256 private immutable MAXIMUM_WEIGHT = 40;
 
-    mapping (bytes32=>Work) public totalSchedule;
+    mapping (bytes32=>Work) public workList;
+    Work[] private _workList;
 
     /// @dev Expected development schedule mode. 
     struct Work {
@@ -31,35 +30,22 @@ contract CalculatorVer01 {
         uint256 MAXIMUM;
     }
 
-    enum TimeWeight { 
-        _REVERTED, // 0. weight function will revert
-        _MINIMUM, // 1
-        _PLAIN, // 2
-        _MAXIMUM // 3
-    }
-
     /// @return default unit decimal is 10 ** 2.
     function decimals() external pure returns(uint256) {
         return _decimals;
     }
 
+    // TODO add error handling
     /// @return weight in this contract's decimals
-    function weight(TimeWeight _timeWeight) external pure returns(uint256) {
-        uint256 timeWeight = uint256(_timeWeight);
-        
-        // predefined. based on rule of thumb
-        uint256 minimum = 10;
-        uint256 plain = 25;
-        uint256 maximum = 40;
-
-        if (timeWeight == 0) {
-            revert();
-        } else if (timeWeight == 1) {
-            return minimum * _decimals; // 1000
-        } else if (timeWeight == 2) {
-            return plain * _decimals; // 2500
+    function weight(uint256 _weight) internal pure returns(uint256) {
+        if (_weight == MINIMUM_WEIGHT) {
+            return MINIMUM_WEIGHT;
+        } else if (_weight == PLAIN_WEIGHT) {
+            return PLAIN_WEIGHT; 
+        } else if (_weight == MAXIMUM_WEIGHT) {
+            return MAXIMUM_WEIGHT; 
         } else { 
-            return maximum * _decimals; // 4000
+            revert();
         }
     }
 
@@ -67,39 +53,57 @@ contract CalculatorVer01 {
     /// @param _expected an amount of expected time for the work
     function calculateOneWork(string memory _work, uint256 _expected) external returns(Work memory) {
         bytes32 _label = keccak256(abi.encode(_work));
-
         uint256 calculatedWithDecimals = _expected ** _decimals;
-        uint256 calculatedMinimumWeight = this.weight(TimeWeight._MINIMUM);
-        uint256 calculatedPlainWeight = this.weight(TimeWeight._PLAIN);
-        uint256 calculatedMaximumWeight = this.weight(TimeWeight._MAXIMUM);
 
         Work memory oneWork = Work({
             label: _label,
-            MINIMUM: calculatedWithDecimals * calculatedMinimumWeight,
-            PLAIN: calculatedWithDecimals * calculatedPlainWeight,
-            MAXIMUM : calculatedWithDecimals * calculatedMaximumWeight
+            MINIMUM: calculatedWithDecimals * weight(MINIMUM_WEIGHT),
+            PLAIN: calculatedWithDecimals * weight(PLAIN_WEIGHT),
+            MAXIMUM : calculatedWithDecimals * weight(MAXIMUM_WEIGHT)
         });
 
-        totalSchedule[_label] = oneWork;
+        workList[_label] = oneWork;
+        _workList.push(oneWork);
 
         return oneWork;
+    }
+
+    function deleteOneWork(string memory _work) external {
+        bytes32 _label = keccak256(abi.encode(_work));
+        delete workList[_label];
     }
 
     /// @dev overloading MINIMUM, PLAIN, MAXIMUM
     /// @notice Returns a schedule within plain timeline
     /// @return minimum time unit
-    function getTotalSchedule(string memory _work, uint8 _minimum) external returns(uint256) {
-        // iterate map and calculate
+    function getTotalSchedule(uint256 _minimum) external view returns(uint256) {
+        require(_minimum == MINIMUM_WEIGHT, "Only minimum");
+        uint256 minimumTotalSchedule;
+        for (uint256 i=0; i<_workList.length; i++) {
+            minimumTotalSchedule += _workList[i].MINIMUM;
+        }
+        return minimumTotalSchedule;
     }
 
     /// @return plain time unit. default
-    function getTotalSchedule(string memory _work) external returns(uint256) {
-        
+    function getTotalSchedule() external view returns(uint256) {
+        uint256 plainTotalSchedule;
+        for (uint256 i=0; i<_workList.length; i++) {
+            plainTotalSchedule += _workList[i].PLAIN;
+        }
+        return plainTotalSchedule;
     }
 
     /// @return maximum time unit
-    function getTotalSchedule(string memory _work, uint256 _maximum) external returns(uint256) {
+    function getTotalSchedule(uint256 _maximum, uint256 _init) external view returns(uint256) {
+        require(_maximum == MAXIMUM_WEIGHT, "Only maximum");
+        require(_init == 0, "Init should be 0");
         
+        uint256 maximumTotalSchedule = _init;
+        for (uint256 i=0; i<_workList.length; i++) {
+            maximumTotalSchedule += _workList[i].MAXIMUM;
+        }
+        return maximumTotalSchedule;
     }
 
 
