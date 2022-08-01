@@ -1,40 +1,31 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import dotenv from "dotenv";
-import { deployContract, Fixture, loadFixture, MockProvider } from "ethereum-waffle";
 import { Contract, Wallet } from "ethers";
 import hre, { ethers } from "hardhat";
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config();
 
 const { FORK_LINK_WHALE, ORACLE_SUBSCRIPTION_ID } = process.env;
 const PREFIX = "unit-VRFv2Consumer";
+const MOCK_SUBSCRIPTION_ID = 9302;
 let contract: Contract;
 
-const useFixture = async (wallets: Wallet[], provider: MockProvider) => {
-  const [owner, recipient] = await ethers.getSigners();
-  const VRF_V2_CONSUMER_ABI = await hre.artifacts.readArtifact("VRFv2Consumer");
-  contract = await deployContract(owner, VRF_V2_CONSUMER_ABI, [ORACLE_SUBSCRIPTION_ID]);
+const useFixture = async () => {
+  const VRFv2Consumer = await ethers.getContractFactory("VRFv2Consumer");
+  const vrfV2Consumer = await VRFv2Consumer.deploy(MOCK_SUBSCRIPTION_ID);
+  contract = await vrfV2Consumer.deployed();
 
   return {
     contract,
-    owner,
-    recipient,
   };
 };
 
-// FIX: come back after chainlink hardhat starter kit
 describe(`${PREFIX}-functionality`, function TestFunctionality() {
-  beforeEach("Should deploy a contract", async function TestDeployment() {
-    const VRF_V2_CONSUMER_ABI = await hre.artifacts.readArtifact("VRFv2Consumer");
-    const [owner, recipient] = await ethers.getSigners();
-    contract = await deployContract(owner, VRF_V2_CONSUMER_ABI, [ORACLE_SUBSCRIPTION_ID]);
-  });
-  it("Should return a contract name", async function TestName() {
-    expect(await contract.name()).to.equal("VRFv2Consumer");
-  });
-  it("Fixture should work", async function TestFixure() {
-    // const { owner, recipient, contract } = await loadFixture(useFixture);
-    console.log(contract);
+  it.only("Public vars should be zero", async function TestFixure() {
+    const { contract } = await loadFixture(useFixture);
+    expect(await contract.s_requestId()).to.equal(0);
+    await expect(contract.s_randomWords(0)).to.be.reverted;
   });
 });
