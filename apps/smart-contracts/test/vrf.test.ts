@@ -23,7 +23,7 @@ const useFixture = async () => {
 };
 
 describe(`${PREFIX}-functionality`, function TestFunctionality() {
-  it.only("Public vars should be zero", async function TestFixure() {
+  it("Public vars should be zero", async function TestFixure() {
     const { contract } = await loadFixture(useFixture);
     expect(await contract.s_requestId()).to.equal(0);
     await expect(contract.s_randomWords(0)).to.be.reverted;

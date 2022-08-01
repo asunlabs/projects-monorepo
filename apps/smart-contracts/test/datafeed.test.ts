@@ -18,7 +18,7 @@ const useFixture = async () => {
 };
 
 describe(`${PREFIX}-price-oracle`, function TestOracle() {
-  it.only("ETH/USD aggregator should initialize", async function TestEthUsdFeed() {
+  it("ETH/USD aggregator should initialize", async function TestEthUsdFeed() {
     const { contract } = await loadFixture(useFixture);
     // Kovan: ETH/USD
     const kovanEthUsdAggregator = "0x9326BFA02ADD2366b30bacB125260Af641031331";

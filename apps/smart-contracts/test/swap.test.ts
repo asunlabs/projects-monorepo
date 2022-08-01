@@ -2,11 +2,12 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { Contract } from "ethers";
 import * as helpers from "@nomicfoundation/hardhat-network-helpers";
-import USDC_ABI from "./USDC.json";
-import DAI_ABI from "./DAI.json";
+import USDC_ABI from "./abi/USDC.json";
+import DAI_ABI from "./abi/DAI.json";
 import dotenv from "dotenv";
 import chalk from "chalk";
 import hre from "hardhat";
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config();
 
@@ -18,16 +19,22 @@ dotenv.config();
 
 const { FORK_USDC_WHALE, FORK_DAI_WHALE, FORK_USDC_MAINNET, FORK_DAI_MAINNET } = process.env;
 const UNISWAP_ROUTER = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
+const PREFIX = "unit-dex";
 let dex: Contract;
 
-describe("Dex", function () {
-  beforeEach(async function DeployContract() {
-    const Dex = await ethers.getContractFactory("Dex");
-    const _dex = await Dex.deploy();
-    dex = await _dex.deployed();
-  });
+const useFixture = async () => {
+  const Dex = await ethers.getContractFactory("Dex");
+  const _dex = await Dex.deploy();
+  dex = await _dex.deployed();
 
+  return {
+    dex,
+  };
+};
+
+describe(`${PREFIX}-functionality`, function () {
   it("Should fetch a correct name", async function TestDexName() {
+    const { dex } = await loadFixture(useFixture);
     expect(await dex.name()).to.equal("Dex");
   });
 
@@ -58,6 +65,7 @@ describe("Dex", function () {
   });
 
   it("Should approve Dex for USDC", async function TestUSDCswap() {
+    const { dex } = await loadFixture(useFixture);
     const USDC = await ethers.getContractAt(USDC_ABI, FORK_USDC_MAINNET!);
 
     // impersonate whale account
@@ -70,6 +78,7 @@ describe("Dex", function () {
   });
 
   it("Should swap USCD for ETH", async function TestTransfer() {
+    const { dex } = await loadFixture(useFixture);
     const USDC = await ethers.getContractAt(USDC_ABI, FORK_USDC_MAINNET!);
 
     await helpers.impersonateAccount(FORK_DAI_WHALE!);
@@ -88,13 +97,17 @@ describe("Dex", function () {
     console.log(chalk.bgWhite.black.bold("after swap:"), await USDC.balanceOf(signer.address));
     console.log(chalk.bgCyan.white("after ETH: "), await signer.getBalance());
   });
+
   it("Should read the whale's DAI balance", async function TestDaiBalance() {
     await helpers.impersonateAccount(FORK_DAI_WHALE!);
     const signer = await ethers.getSigner(FORK_DAI_WHALE!);
     const DAI = await ethers.getContractAt(DAI_ABI, FORK_DAI_MAINNET!);
     expect((await DAI.balanceOf(signer.address)) / 1e18).not.to.equal(0);
   });
+
   it("Should swap ETH for USDC", async function TestDAIEthSwap() {
+    const { dex } = await loadFixture(useFixture);
+
     await helpers.impersonateAccount(FORK_DAI_WHALE!);
     const signer = await ethers.getSigner(FORK_DAI_WHALE!);
     const USDC = await ethers.getContractAt(USDC_ABI, FORK_USDC_MAINNET!);
