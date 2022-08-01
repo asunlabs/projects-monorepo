@@ -3,15 +3,36 @@ import { ethers } from "hardhat";
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-etherscan"; // for etherscan contract verification
 import "@nomiclabs/hardhat-ethers";
-import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
 import "ethereum-waffle";
+import "@nomiclabs/hardhat-waffle";
 import helpers from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config({ path: "./.env.development" });
+
+const {
+  TEST_ROPSTEN_URL,
+  TEST_RINKEBY_URL,
+  TEST_KOVAN_URL,
+  MAIN_ETHEREUM_URL,
+  FORK_MAINNET_URL,
+
+  ACCOUNT_ROPSTEN_PRIVATE_KEY,
+  ACCOUNT_RINKEBY_PRIVATE_KEY,
+  ACCOUNT_KOVAN_PRIVATE_KEY,
+  ACCOUNT_ETHEREUM_PRIVATE_KEY,
+
+  ACCOUNT_DEPLOYER_PRIVATE_KEY,
+  ACCOUNT_DEPLOYER_ADDRESS,
+
+  PLUGIN_REPORT_GAS,
+  API_COINMARKETCAP_KEY,
+  API_ETHERSCAN_KEY,
+  API_ETHERSCAN_BACKUP_KEY,
+} = process.env;
 
 const options = {
   settings: {
@@ -21,6 +42,11 @@ const options = {
     },
     // evmVersion: "london",
   },
+};
+
+const deployerForTheSameAddress = {
+  ADDRESS: ACCOUNT_DEPLOYER_ADDRESS,
+  PRIVATE_KEY: ACCOUNT_DEPLOYER_PRIVATE_KEY,
 };
 
 const config: HardhatUserConfig = {
@@ -42,28 +68,36 @@ const config: HardhatUserConfig = {
   networks: {
     // JSON-RPC based network
     ropsten: {
-      url: process.env.TEST_ROPSTEN_URL
-        ? String(process.env.TEST_ROPSTEN_URL)
-        : "",
+      url: TEST_ROPSTEN_URL ? String(TEST_ROPSTEN_URL) : "",
       accounts:
-        process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY !== undefined
-          ? [process.env.ACCOUNT_ROPSTEN_PRIVATE_KEY]
+        ACCOUNT_ROPSTEN_PRIVATE_KEY !== undefined
+          ? [ACCOUNT_ROPSTEN_PRIVATE_KEY]
+          : [],
+    },
+    rinkeby: {
+      url: TEST_RINKEBY_URL ? String(TEST_RINKEBY_URL) : "",
+      accounts:
+        ACCOUNT_RINKEBY_PRIVATE_KEY !== undefined
+          ? [ACCOUNT_RINKEBY_PRIVATE_KEY]
+          : [],
+    },
+    kovan: {
+      url: TEST_KOVAN_URL ? String(TEST_KOVAN_URL) : "",
+      accounts:
+        ACCOUNT_KOVAN_PRIVATE_KEY !== undefined
+          ? [ACCOUNT_KOVAN_PRIVATE_KEY]
           : [],
     },
     mainnet: {
-      url: process.env.MAIN_ETHEREUM_URL
-        ? String(process.env.MAIN_ETHEREUM_URL)
-        : "",
+      url: MAIN_ETHEREUM_URL ? String(MAIN_ETHEREUM_URL) : "",
       accounts:
-        process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined
-          ? [process.env.ACCOUNT_ETHEREUM_PRIVATE_KEY]
+        ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined
+          ? [ACCOUNT_ETHEREUM_PRIVATE_KEY]
           : [],
     },
     hardhat: {
       forking: {
-        url: process.env.FORK_MAINNET_URL
-          ? String(process.env.FORK_MAINNET_URL)
-          : "", // alchemy node assist an archived data caching
+        url: FORK_MAINNET_URL ? String(FORK_MAINNET_URL) : "", // alchemy node assist an archived data caching
         blockNumber: 14390000,
         enabled: true,
       },
@@ -76,17 +110,17 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   gasReporter: {
-    enabled: Boolean(process.env.PLUGIN_REPORT_GAS) ? true : false,
-    coinmarketcap: String(process.env.API_COINMARKETCAP_KEY), // for gas reporter
+    enabled: Boolean(PLUGIN_REPORT_GAS) ? true : false,
+    coinmarketcap: String(API_COINMARKETCAP_KEY), // for gas reporter
     currency: "USD",
     src: "./contracts",
     outputFile: "./byproducts",
   },
   etherscan: {
     apiKey: {
-      ropsten: process.env.API_ETHERSCAN_KEY
-        ? String(process.env.API_ETHERSCAN_KEY)
-        : "",
+      ropsten: API_ETHERSCAN_KEY !== undefined ? API_ETHERSCAN_KEY : "",
+      rinkeby:
+        API_ETHERSCAN_BACKUP_KEY !== undefined ? API_ETHERSCAN_BACKUP_KEY : "",
     },
   },
   mocha: {

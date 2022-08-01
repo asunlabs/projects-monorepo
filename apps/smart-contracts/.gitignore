@@ -10,3 +10,4 @@ typechain-types
 cache
 artifacts
 oracle-template
+.deps

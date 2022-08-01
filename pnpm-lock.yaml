@@ -39,7 +39,7 @@ importers:
       '@nomicfoundation/hardhat-network-helpers': ^1.0.3
       '@nomiclabs/hardhat-ethers': ^2.1.0
       '@nomiclabs/hardhat-etherscan': 3.1.0
-      '@nomiclabs/hardhat-waffle': 2.0.0
+      '@nomiclabs/hardhat-waffle': ^2.0.3
       '@openzeppelin/contracts': ^4.7.0
       '@openzeppelin/contracts-upgradeable': ^4.7.0
       '@openzeppelin/hardhat-upgrades': ^1.19.0
@@ -62,7 +62,7 @@ importers:
       eslint-plugin-import: 2.23.4
       eslint-plugin-node: 11.1.0
       eslint-plugin-promise: ^4.2.1 || ^5.0.0
-      ethereum-waffle: 3.0.0
+      ethereum-waffle: ^3.4.4
       ethers: ^5.6.9
       hardhat: 2.9.9
       hardhat-gas-reporter: ^1.0.8
@@ -80,7 +80,7 @@ importers:
       '@nomicfoundation/hardhat-network-helpers': 1.0.3_hardhat@2.9.9
       '@nomiclabs/hardhat-ethers': 2.1.0_ethers@5.6.9+hardhat@2.9.9
       '@nomiclabs/hardhat-etherscan': 3.1.0_hardhat@2.9.9
-      '@nomiclabs/hardhat-waffle': 2.0.0_xuqmbqnwpdzm34h3xtxpkm5l6e
+      '@nomiclabs/hardhat-waffle': 2.0.3_dxvj332oxod2npeq5qenophn3u
       '@openzeppelin/contracts': 4.7.0
       '@openzeppelin/contracts-upgradeable': 4.7.0
       '@openzeppelin/hardhat-upgrades': 1.19.0_6m3w55b7hmai2mb2byozngn664
@@ -103,7 +103,7 @@ importers:
       eslint-plugin-import: 2.23.4_eslint@7.29.0
       eslint-plugin-node: 11.1.0_eslint@7.29.0
       eslint-plugin-promise: 5.2.0_eslint@7.29.0
-      ethereum-waffle: 3.0.0_typescript@4.7.4
+      ethereum-waffle: 3.4.4_typescript@4.7.4
       ethers: 5.6.9
       hardhat: 2.9.9_6oasmw356qmm23djlsjgkwvrtm
       hardhat-gas-reporter: 1.0.8_hardhat@2.9.9
@@ -749,18 +749,18 @@ packages:
       - supports-color
     dev: true
 
-  /@nomiclabs/hardhat-waffle/2.0.0_xuqmbqnwpdzm34h3xtxpkm5l6e:
-    resolution: {integrity: sha512-CnG9JC0rgqa68LTgyETxBUEWYAovvNGVs5abqaXjG80eF7iMLjDjM8IjOM87siAaxaxFCf6VBMJmtueqVq7jZw==}
+  /@nomiclabs/hardhat-waffle/2.0.3_dxvj332oxod2npeq5qenophn3u:
+    resolution: {integrity: sha512-049PHSnI1CZq6+XTbrMbMv5NaL7cednTfPenx02k3cEh8wBMLa6ys++dBETJa6JjfwgA9nBhhHQ173LJv6k2Pg==}
     peerDependencies:
       '@nomiclabs/hardhat-ethers': ^2.0.0
-      ethereum-waffle: ^3.0.0
+      ethereum-waffle: ^3.2.0
       ethers: ^5.0.0
       hardhat: ^2.0.0
     dependencies:
       '@nomiclabs/hardhat-ethers': 2.1.0_ethers@5.6.9+hardhat@2.9.9
       '@types/sinon-chai': 3.2.8
       '@types/web3': 1.0.19
-      ethereum-waffle: 3.0.0_typescript@4.7.4
+      ethereum-waffle: 3.4.4_typescript@4.7.4
       ethers: 5.6.9
       hardhat: 2.9.9_6oasmw356qmm23djlsjgkwvrtm
     dev: true
@@ -1229,11 +1229,11 @@ packages:
     resolution: {integrity: sha512-d4ImIQbT/rKMG8+AXpmcan5T2/PNeSjrYhvkwet6z0p8kzYtfgA32xzOBlbU0yqJfq+/0Ml805iFoODO0LP5/g==}
     dependencies:
       '@types/chai': 4.3.1
-      '@types/sinon': 10.0.12
+      '@types/sinon': 10.0.13
     dev: true
 
-  /@types/sinon/10.0.12:
-    resolution: {integrity: sha512-uWf4QJ4oky/GckJ1MYQxU52cgVDcXwBhDkpvLbi4EKoLPqLE4MOH6T/ttM33l3hi0oZ882G6oIzWv/oupRYSxQ==}
+  /@types/sinon/10.0.13:
+    resolution: {integrity: sha512-UVjDqJblVNQYvVNUsj0PuYYw0ELRmgt1Nt5Vk0pT5f16ROGfcKJY8o1HVuMOJOpD727RrGB9EGvoaTQE5tgxZQ==}
     dependencies:
       '@types/sinonjs__fake-timers': 8.1.2
     dev: true
@@ -2434,8 +2434,8 @@ packages:
     resolution: {integrity: sha512-WHVocJYavUwVgVViC0ORikPHQquXwVh939TaelZ4WDqpWgTX/FsGhl/+P4qBUAGcRvtOgDgC+xftNWWp2RUTAQ==}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001367
-      electron-to-chromium: 1.4.192
+      caniuse-lite: 1.0.30001373
+      electron-to-chromium: 1.4.206
     dev: true
 
   /bs58/4.0.1:
@@ -2565,8 +2565,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite/1.0.30001367:
-    resolution: {integrity: sha512-XDgbeOHfifWV3GEES2B8rtsrADx4Jf+juKX2SICJcaUhjYBO3bR96kvEIHa15VU6ohtOhBZuPGGYGbXMRn0NCw==}
+  /caniuse-lite/1.0.30001373:
+    resolution: {integrity: sha512-pJYArGHrPp3TUqQzFYRmP/lwJlj8RCbVe3Gd3eJQkAV8SAC6b19XS9BjMvRdvaS8RMkaTN8ZhoHP6S1y8zzwEQ==}
     dev: true
 
   /caseless/0.12.0:
@@ -3379,8 +3379,8 @@ packages:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: true
 
-  /electron-to-chromium/1.4.192:
-    resolution: {integrity: sha512-8nCXyIQY9An88NXAp+PuPy5h3/w5ZY7Iu2lag65Q0XREprcat5F8gKhoHsBUnQcFuCRnmevpR8yEBYRU3d2HDw==}
+  /electron-to-chromium/1.4.206:
+    resolution: {integrity: sha512-h+Fadt1gIaQ06JaIiyqPsBjJ08fV5Q7md+V8bUvQW/9OvXfL2LRICTz2EcnnCP7QzrFTS6/27MRV6Bl9Yn97zA==}
     dev: true
 
   /elliptic/6.5.4:
@@ -4024,8 +4024,8 @@ packages:
       '@scure/bip39': 1.1.0
     dev: true
 
-  /ethereum-waffle/3.0.0_typescript@4.7.4:
-    resolution: {integrity: sha512-r7hQHGs6uuUIcZxcwsxXbntk6XQkdC4HST4lFN493H9Ac9JLnYbaQ3Yp2qeGK7P7BqrDUqGZwylSIT+1odtAmA==}
+  /ethereum-waffle/3.4.4_typescript@4.7.4:
+    resolution: {integrity: sha512-PA9+jCjw4WC3Oc5ocSMBj5sXvueWQeAbvCA+hUlb6oFgwwKyq5ka3bWQ7QZcjzIX+TdFkxP4IbFmoY2D8Dkj9Q==}
     engines: {node: '>=10.0'}
     hasBin: true
     dependencies:
