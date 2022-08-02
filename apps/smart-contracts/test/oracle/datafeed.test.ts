@@ -1,9 +1,7 @@
-import { ethers, network } from "hardhat";
-import hre from "hardhat";
-import { Contract, Wallet } from "ethers";
-import { expect, use } from "chai";
-import { loadFixture, impersonateAccount, takeSnapshot } from "@nomicfoundation/hardhat-network-helpers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { ethers } from "hardhat";
+import { Contract } from "ethers";
+import { expect } from "chai";
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import chalk from "chalk";
 
 const PREFIX = "unit-datafeedfactory";
@@ -61,6 +59,6 @@ describe(`${PREFIX}-price-oracle`, function TestOracle() {
     await contract.initDataFeeds(mainnetUsdcEthAggregator);
     const USDC_ETH_AGGREGATOR_INDEX = 0;
     console.log(chalk.bgMagenta.bold("PRICE ORACLE: "), await contract.getPrice(USDC_ETH_AGGREGATOR_INDEX));
-    await expect(contract.getPrice(USDC_ETH_AGGREGATOR_INDEX)).not.to.be.reverted;
+    await expect(contract.getPrice(USDC_ETH_AGGREGATOR_INDEX)).not.to.be.reveted;
   });
 });

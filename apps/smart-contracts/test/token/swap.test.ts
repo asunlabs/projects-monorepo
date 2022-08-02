@@ -1,13 +1,11 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import { Contract } from "ethers";
-import * as helpers from "@nomicfoundation/hardhat-network-helpers";
-import USDC_ABI from "./abi/USDC.json";
-import DAI_ABI from "./abi/DAI.json";
+import USDC_ABI from "../abi/USDC.json";
+import DAI_ABI from "../abi/DAI.json";
 import dotenv from "dotenv";
 import chalk from "chalk";
-import hre from "hardhat";
-import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+import { loadFixture, impersonateAccount } from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config();
 
@@ -15,7 +13,6 @@ dotenv.config();
 // FORK_DAI_WHALE:
 // 1) 25 ETH
 // 2) 155078679406831 USDC
-// 3)
 
 const { FORK_USDC_WHALE, FORK_DAI_WHALE, FORK_USDC_MAINNET, FORK_DAI_MAINNET } = process.env;
 const UNISWAP_ROUTER = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
@@ -41,7 +38,7 @@ describe(`${PREFIX}-functionality`, function () {
   it("Should impersonate mainnet account", async function TestMainnetFork() {
     // FORK_DAI_WHALE has 25 ethers and many DAI, USDC
     if (FORK_DAI_WHALE !== undefined) {
-      await helpers.impersonateAccount(FORK_DAI_WHALE);
+      await impersonateAccount(FORK_DAI_WHALE);
       const impersonatedAccount = await ethers.getSigner(FORK_DAI_WHALE);
       const [hardhatAccount] = await ethers.getSigners();
       console.log(await impersonatedAccount.getChainId());
@@ -69,7 +66,7 @@ describe(`${PREFIX}-functionality`, function () {
     const USDC = await ethers.getContractAt(USDC_ABI, FORK_USDC_MAINNET!);
 
     // impersonate whale account
-    await helpers.impersonateAccount(FORK_DAI_WHALE!);
+    await impersonateAccount(FORK_DAI_WHALE!);
     const impersonatedDAIwhale = await ethers.getSigner(FORK_DAI_WHALE!);
     console.log(await USDC.balanceOf(impersonatedDAIwhale.address));
 
@@ -81,7 +78,7 @@ describe(`${PREFIX}-functionality`, function () {
     const { dex } = await loadFixture(useFixture);
     const USDC = await ethers.getContractAt(USDC_ABI, FORK_USDC_MAINNET!);
 
-    await helpers.impersonateAccount(FORK_DAI_WHALE!);
+    await impersonateAccount(FORK_DAI_WHALE!);
     const signer = await ethers.getSigner(FORK_DAI_WHALE!);
     console.log(chalk.bgWhite.black.bold("before swap:"), await USDC.balanceOf(signer.address));
     console.log(chalk.bgCyan.white("before ETH: "), await signer.getBalance());
@@ -99,7 +96,7 @@ describe(`${PREFIX}-functionality`, function () {
   });
 
   it("Should read the whale's DAI balance", async function TestDaiBalance() {
-    await helpers.impersonateAccount(FORK_DAI_WHALE!);
+    await impersonateAccount(FORK_DAI_WHALE!);
     const signer = await ethers.getSigner(FORK_DAI_WHALE!);
     const DAI = await ethers.getContractAt(DAI_ABI, FORK_DAI_MAINNET!);
     expect((await DAI.balanceOf(signer.address)) / 1e18).not.to.equal(0);
@@ -108,7 +105,7 @@ describe(`${PREFIX}-functionality`, function () {
   it("Should swap ETH for USDC", async function TestDAIEthSwap() {
     const { dex } = await loadFixture(useFixture);
 
-    await helpers.impersonateAccount(FORK_DAI_WHALE!);
+    await impersonateAccount(FORK_DAI_WHALE!);
     const signer = await ethers.getSigner(FORK_DAI_WHALE!);
     const USDC = await ethers.getContractAt(USDC_ABI, FORK_USDC_MAINNET!);
 

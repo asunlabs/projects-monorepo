@@ -30,3 +30,16 @@ schedule equals to the total sum of the followings:
 6. Amendment
 7. Code review
 8. Completion
+
+// dev-calculator ☞ TDD로 새로 짜기
+struct Work {
+uint date // block.timestamp
+}
+
+// make struct [ ]
+mapping(address ☞ Work[ ]) private \_workList
+uint public totalTimeline
+
+caculateOneWork
+// totalTimeline += some value
+return plain vlaue

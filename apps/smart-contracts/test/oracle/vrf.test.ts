@@ -1,8 +1,7 @@
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import dotenv from "dotenv";
-import { Contract, Wallet } from "ethers";
-import hre, { ethers } from "hardhat";
+import { Contract } from "ethers";
+import { ethers } from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 dotenv.config();
