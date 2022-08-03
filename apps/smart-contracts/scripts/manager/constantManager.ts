@@ -1,5 +1,6 @@
 import { ChainlinkSolution, NetworkSupport, GoerliProps } from "./typeManager";
 
+// if a token is based on proxy => contract ABI should be implementation, address should be proxy
 export const CONTRACT_ADDR = {
   MAINNET: {
     USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
@@ -14,6 +15,7 @@ export const CONTRACT_ADDR = {
  * Use them until Chainlink will come up with Goerli/Sepolia supports.
  */
 export const ORACLE: ChainlinkSolution = {
+  subscriptionId: 9302,
   datafeeds: "rinkeby", //
   vrf: "rinkeby",
 };

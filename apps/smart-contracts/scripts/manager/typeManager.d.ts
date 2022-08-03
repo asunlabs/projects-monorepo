@@ -1,5 +1,6 @@
 export type oracleTestnet = "kovan" | "rinkeby";
 export type posTestnet = "goerli" | "sepolia";
+export type proxyPattern = "transparent" | "uups" | "beacon";
 
 export interface NetworkSupport {
   testnet?: posTestnet;
@@ -7,6 +8,7 @@ export interface NetworkSupport {
 }
 
 export interface ChainlinkSolution {
+  subscriptionId?: number;
   datafeeds?: oracleTestnet;
   vrf?: oracleTestnet;
 }
