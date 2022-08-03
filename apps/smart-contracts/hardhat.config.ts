@@ -8,6 +8,8 @@ import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
+import { PLUGIN } from "./scripts/manager/constantManager";
+import { requireElement } from "./scripts/hooks/useConfigError";
 
 dotenv.config({ path: "./.env.development" });
 
@@ -15,6 +17,8 @@ const {
   TEST_ROPSTEN_URL,
   TEST_RINKEBY_URL,
   TEST_KOVAN_URL,
+  TEST_GOERLI_URL,
+
   MAIN_ETHEREUM_URL,
   FORK_MAINNET_URL,
 
@@ -26,7 +30,6 @@ const {
   ACCOUNT_DEPLOYER_PRIVATE_KEY,
   ACCOUNT_DEPLOYER_ADDRESS,
 
-  PLUGIN_REPORT_GAS,
   API_COINMARKETCAP_KEY,
   API_ETHERSCAN_KEY,
   API_ETHERSCAN_BACKUP_KEY,
@@ -65,6 +68,25 @@ const config: HardhatUserConfig = {
   },
   networks: {
     // JSON-RPC based network
+    mainnet: {
+      url: MAIN_ETHEREUM_URL ? String(MAIN_ETHEREUM_URL) : "",
+      accounts:
+        ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined
+          ? [ACCOUNT_ETHEREUM_PRIVATE_KEY]
+          : [],
+    },
+    hardhat: {
+      forking: {
+        url: FORK_MAINNET_URL ? String(FORK_MAINNET_URL) : "", // alchemy node assist an archived data caching
+        blockNumber: 14390000,
+        enabled: true,
+      },
+    },
+    // 20220803 TO DO: goerli should be added
+    goerli: {
+      url: TEST_GOERLI_URL !== undefined ? TEST_GOERLI_URL : "",
+      accounts: [],
+    },
     ropsten: {
       url: TEST_ROPSTEN_URL ? String(TEST_ROPSTEN_URL) : "",
       accounts:
@@ -86,20 +108,6 @@ const config: HardhatUserConfig = {
           ? [ACCOUNT_KOVAN_PRIVATE_KEY]
           : [],
     },
-    mainnet: {
-      url: MAIN_ETHEREUM_URL ? String(MAIN_ETHEREUM_URL) : "",
-      accounts:
-        ACCOUNT_ETHEREUM_PRIVATE_KEY !== undefined
-          ? [ACCOUNT_ETHEREUM_PRIVATE_KEY]
-          : [],
-    },
-    hardhat: {
-      forking: {
-        url: FORK_MAINNET_URL ? String(FORK_MAINNET_URL) : "", // alchemy node assist an archived data caching
-        blockNumber: 14390000,
-        enabled: true,
-      },
-    },
   },
   paths: {
     artifacts: "./artifacts",
@@ -108,7 +116,7 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   gasReporter: {
-    enabled: Boolean(PLUGIN_REPORT_GAS) ? true : false,
+    enabled: Boolean(PLUGIN.REPORT_GAS) ? true : false,
     coinmarketcap: String(API_COINMARKETCAP_KEY), // for gas reporter
     currency: "USD",
     src: "./contracts",
@@ -120,10 +128,6 @@ const config: HardhatUserConfig = {
       rinkeby:
         API_ETHERSCAN_BACKUP_KEY !== undefined ? API_ETHERSCAN_BACKUP_KEY : "",
     },
-  },
-  mocha: {
-    timeout: 40000,
-    color: true,
   },
   typechain: {
     outDir: "byproducts/typechain",
