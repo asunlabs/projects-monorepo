@@ -8,16 +8,10 @@ import chalk from "chalk";
 import { loadFixture, impersonateAccount } from "@nomicfoundation/hardhat-network-helpers";
 import { anyUint, anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { PANIC_CODES } from "@nomicfoundation/hardhat-chai-matchers/panic";
-import { WHALE } from "../../scripts/manager/constantManager";
+import { WHALE, CONTRACT_ADDR } from "../../scripts/manager/constantManager";
 
 dotenv.config();
 
-// if a token is based on proxy => contract ABI should be implementation, address should be proxy
-// FORK_DAI_WHALE:
-// 1) 25 ETH
-// 2) 155078679406831 USDC
-
-const UNISWAP_ROUTER = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 const PREFIX = "unit-dex";
 let dex: Contract;
 
@@ -65,7 +59,7 @@ describe.only(`${PREFIX}-functionality`, function () {
 
   it("Should approve Dex for USDC", async function TestUSDCswap() {
     const { dex } = await loadFixture(useFixture);
-    const USDC = await ethers.getContractAt(USDC_ABI, WHALE.MAINNET.ERC20.USDC!);
+    const USDC = await ethers.getContractAt(USDC_ABI, CONTRACT_ADDR.MAINNET.USDC);
 
     // impersonate whale account
     await impersonateAccount(WHALE.MAINNET.ERC20.DAI);
@@ -78,7 +72,7 @@ describe.only(`${PREFIX}-functionality`, function () {
 
   it("Should swap USCD for ETH", async function TestTransfer() {
     const { dex } = await loadFixture(useFixture);
-    const USDC = await ethers.getContractAt(USDC_ABI, WHALE.MAINNET.ERC20.USDC);
+    const USDC = await ethers.getContractAt(USDC_ABI, CONTRACT_ADDR.MAINNET.USDC);
 
     await impersonateAccount(WHALE.MAINNET.ERC20.DAI);
     const signer = await ethers.getSigner(WHALE.MAINNET.ERC20.DAI);
@@ -100,7 +94,7 @@ describe.only(`${PREFIX}-functionality`, function () {
   it("Should read the whale's DAI balance", async function TestDaiBalance() {
     await impersonateAccount(WHALE.MAINNET.ERC20.DAI);
     const signer = await ethers.getSigner(WHALE.MAINNET.ERC20.DAI);
-    const DAI = await ethers.getContractAt(DAI_ABI, WHALE.MAINNET.ERC20.DAI);
+    const DAI = await ethers.getContractAt(DAI_ABI, CONTRACT_ADDR.MAINNET.DAI);
     expect((await DAI.balanceOf(signer.address)) / 1e18).not.to.equal(0);
   });
 
