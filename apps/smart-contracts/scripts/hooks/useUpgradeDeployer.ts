@@ -1,19 +1,26 @@
 import { Contract, Signer } from "ethers";
 import { ethers, upgrades } from "hardhat";
 import chalk from "chalk";
+import { proxyPattern } from "../manager/typeManager";
 
-type proxyPattern = "transparent" | "uups" | "beacon";
-
-async function useTransparent(contractName: string, signer?: Signer, constructorArgs?: any) {
+async function useTransparent(contractName: string, signer?: Signer, constructorArgs?: unknown[]) {
   let contract: Contract;
   const Contract = await ethers.getContractFactory(contractName, signer);
-  contract = await upgrades.deployProxy(Contract, [...constructorArgs], {
-    initializer: "initializer",
-    kind: "transparent",
-  });
 
-  console.log(`===== ${contractName} is transparent proxy =====`);
-  console.log(chalk.bgMagenta.bold(`${contractName} deployed to: `), contract.address);
+  if (constructorArgs !== undefined) {
+    contract = await upgrades.deployProxy(Contract, constructorArgs, {
+      initializer: "initializer",
+      kind: "transparent",
+    });
+  } else {
+    contract = await upgrades.deployProxy(Contract, {
+      initializer: "initializer",
+      kind: "transparent",
+    });
+  }
+
+  console.log(chalk.bgMagenta.bold(`===== ${contractName} is upgradeable: transparent proxy =====`));
+  console.log(chalk.bgCyan.bold(`${contractName} deployed to: `), contract.address);
 
   return contract;
 }
