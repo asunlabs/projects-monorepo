@@ -59,6 +59,6 @@ describe(`${PREFIX}-price-oracle`, function TestOracle() {
     await contract.initDataFeeds(mainnetUsdcEthAggregator);
     const USDC_ETH_AGGREGATOR_INDEX = 0;
     console.log(chalk.bgMagenta.bold("PRICE ORACLE: "), await contract.getPrice(USDC_ETH_AGGREGATOR_INDEX));
-    await expect(contract.getPrice(USDC_ETH_AGGREGATOR_INDEX)).not.to.be.reveted;
+    await expect(contract.getPrice(USDC_ETH_AGGREGATOR_INDEX)).not.to.be.reverted;
   });
 });
