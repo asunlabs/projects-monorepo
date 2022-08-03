@@ -1,4 +1,4 @@
-const { hre, ethers, upgrades } = require("hardhat");
+import { ethers, upgrades } from "hardhat";
 
 async function main() {
   const UUPS = await ethers.getContractFactory("ERC20UpgradeableWithUUPS");

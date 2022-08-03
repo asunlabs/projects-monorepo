@@ -1,11 +1,9 @@
-const { hre, ethers, upgrades } = require("hardhat");
+import { ethers, upgrades } from "hardhat";
 
 const proxyAddress = "0xDB910436B2EB3CA24e14d72eb0DD2275BA87EFFA";
 
 async function main() {
-  const UUPSver2 = await ethers.getContractFactory(
-    "ERC20UpgradeableWithUUPSver2"
-  );
+  const UUPSver2 = await ethers.getContractFactory("ERC20UpgradeableWithUUPSver2");
 
   const uupsVer2 = await upgrades.upgradeProxy(proxyAddress, UUPSver2);
 
