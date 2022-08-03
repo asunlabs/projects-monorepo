@@ -10,8 +10,6 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 // see here: https://github.com/OpenZeppelin/openzeppelin-upgrades/issues/574
 
 contract JakeERC20Upgradeable is Initializable, ERC20Upgradeable, OwnableUpgradeable {
-    // constructor() ERC20("JakeERC20", "JK20") {}
-
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();

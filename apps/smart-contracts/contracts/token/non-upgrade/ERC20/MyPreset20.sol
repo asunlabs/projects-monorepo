@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.15;
 
-// import "@openzeppelin/contracts/token/preset/ERC20PresetMinterPauser.sol";
 import "@openzeppelin/contracts/token/ERC20/presets/ERC20PresetMinterPauser.sol";
 
 contract MyPreset20 is ERC20PresetMinterPauser {
