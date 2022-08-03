@@ -1,25 +1,4 @@
-// Ethereum testnet: Goerli
-
-type oracleTestnet = "kovan" | "rinkeby";
-type posTestnet = "goerli" | "sepolia";
-
-interface NetworkSupport {
-  testnet?: posTestnet;
-  oracle?: oracleTestnet;
-}
-
-interface ChainlinkSolution {
-  datafeeds?: oracleTestnet;
-  vrf?: oracleTestnet;
-}
-
-interface GoerliProps {
-  ERC20: {
-    DAI: string;
-    USDC: string;
-    WETH: string;
-  };
-}
+import { ChainlinkSolution, NetworkSupport, GoerliProps } from "./typeManager";
 
 export const CONTRACT_ADDR = {
   MAINNET: {
@@ -29,14 +8,19 @@ export const CONTRACT_ADDR = {
   GOERLI: {},
 };
 
+/**
+ * LINK token: kovan is deprecated.
+ * Rinkeby and Kovan is deprecated after PoS merge update.
+ * Use them until Chainlink will come up with Goerli/Sepolia supports.
+ */
 export const ORACLE: ChainlinkSolution = {
-  datafeeds: "kovan",
-  vrf: "kovan",
+  datafeeds: "rinkeby", //
+  vrf: "rinkeby",
 };
 
 export const NETWORK: NetworkSupport = {
   testnet: "goerli",
-  oracle: "kovan",
+  oracle: "rinkeby",
 };
 
 export const WHALE = {
