@@ -9,11 +9,7 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": [
-    "./scripts",
-    "./test"
-  ],
-  "files": [
-    "./hardhat.config.ts"
-  ]
+  "include": ["./scripts", "./test"],
+  "exclude": ["./contracts/reference"],
+  "files": ["./hardhat.config.ts"]
 }
