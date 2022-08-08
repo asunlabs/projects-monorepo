@@ -2,7 +2,7 @@ import { Contract } from "ethers";
 import { ethers } from "hardhat";
 import chalk from "chalk";
 
-async function deploy(contractName: string, constructorArgs?: any[]) {
+async function deployer(contractName: string, constructorArgs?: any[]) {
   let contract;
   const Contract = await ethers.getContractFactory(contractName);
 
@@ -17,7 +17,7 @@ async function deploy(contractName: string, constructorArgs?: any[]) {
   console.log(chalk.bgMagenta.bold(`===== ${contractName} is non-upgrade =====`));
   console.log(chalk.bgCyan.bold(`${contractName} deployed to: `), contract.address);
 
-  return contract;
+  return { contract };
 }
 
-export default deploy;
+export default deployer;
