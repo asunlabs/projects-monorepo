@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test:unit": "nodemon -w test --exec mocha -g \"unit\" --slow 2000  --reporter list",
-    "test:mainnet": "nodemon -w test --exec hardhat test"
+    "test:mainnet": "nodemon -w test --exec hardhat test",
+    "doc": "pnpm exec hardhat docgen"
   },
   "keywords": [],
   "author": "",
@@ -47,6 +48,7 @@
     "mocha": "^10.0.0",
     "nodemon": "^2.0.19",
     "solidity-coverage": "^0.7.21",
+    "solidity-docgen": "0.6.0-beta.22",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.0",
     "typescript": "^4.5.2"

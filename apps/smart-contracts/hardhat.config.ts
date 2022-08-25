@@ -8,6 +8,7 @@ import "solidity-coverage";
 import "@openzeppelin/hardhat-upgrades";
 import "@nomiclabs/hardhat-ethers";
 import "@nomicfoundation/hardhat-chai-matchers";
+import "solidity-docgen";
 import { PLUGIN } from "./scripts/manager/constantManager";
 
 dotenv.config({ path: "./.env.development" });
@@ -62,6 +63,7 @@ const config: HardhatUserConfig = {
       { version: "0.6.6" },
       { version: "0.8.0" },
       { version: "0.8.15" },
+      { version: "0.8.16" },
     ].map((ver) => {
       return {
         ...ver,
@@ -127,16 +129,16 @@ const config: HardhatUserConfig = {
   },
   paths: {
     artifacts: "./artifacts",
-    cache: "./byproducts/cache",
+    cache: "./cache",
     sources: "./contracts",
     tests: "./test",
   },
   gasReporter: {
-    enabled: Boolean(PLUGIN.REPORT_GAS) ? true : false,
+    enabled: PLUGIN.REPORT_GAS ? true : false,
     coinmarketcap: String(API_COINMARKETCAP_KEY), // for gas reporter
     currency: "USD",
     src: "./contracts",
-    outputFile: "./byproducts",
+    outputFile: "./",
   },
   etherscan: {
     apiKey: {
@@ -147,8 +149,14 @@ const config: HardhatUserConfig = {
     },
   },
   typechain: {
-    outDir: "byproducts/typechain",
+    outDir: "typechain",
     target: "ethers-v5",
+  },
+  docgen: {
+    pages: "files",
+    pageExtension: ".md",
+    outputDir: "./docs",
+    exclude: ["contracts/reference"],
   },
 };
 
