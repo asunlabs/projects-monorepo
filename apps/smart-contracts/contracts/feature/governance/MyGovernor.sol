@@ -8,6 +8,9 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol";
 
+/// @dev 1. anyone can vote with Gorvernor contract
+/// @dev 2. timelock contract does actual logic for Governor contract
+/// @dev 3. anyone can execute voting result after voting delay
 contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction, GovernorTimelockControl {
     constructor(
         IVotes _token,
