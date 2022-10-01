@@ -7,10 +7,13 @@
     "hh": "pnpm exec hardhat"
   },
   "scripts": {
-    "test:unit": "nodemon -w test --exec mocha -g \"unit\" --slow 2000  --reporter list",
-    "test:mainnet": "nodemon -w test --exec hardhat test",
+    "test:unit:dev": "nodemon -w test --exec mocha -g \"unit\" --slow 2000  --reporter list",
+    "test:integ:dev": "nodemon -w test --exec mocha -g \"integ\" --slow 2000  --reporter list",
+    "ci:tests": "%npm_package_custom_hh% hardhat test",
     "doc": "%npm_package_custom_hh% docgen",
-    "tests": "%npm_package_custom_hh% test"
+    "tests": "%npm_package_custom_hh% test",
+    "clean": "%npm_package_custom_hh% clean",
+    "compile": "%npm_package_custom_hh% compile"
   },
   "keywords": [],
   "author": "",
