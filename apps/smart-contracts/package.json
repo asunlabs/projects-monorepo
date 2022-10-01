@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
+  "custom": {
+    "hh": "pnpm exec hardhat"
+  },
   "scripts": {
     "test:unit": "nodemon -w test --exec mocha -g \"unit\" --slow 2000  --reporter list",
     "test:mainnet": "nodemon -w test --exec hardhat test",
-    "doc": "pnpm exec hardhat docgen"
+    "doc": "%npm_package_custom_hh% docgen",
+    "tests": "%npm_package_custom_hh% test"
   },
   "keywords": [],
   "author": "",
