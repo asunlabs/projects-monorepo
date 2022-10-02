@@ -1,12 +1,45 @@
-[![wakatime](https://wakatime.com/badge/user/e56daee8-7aae-4b0e-814c-b6bb7f5f841c/project/cc1be56d-d095-4fdc-afae-f8dc39e06621.svg)](https://wakatime.com/badge/user/e56daee8-7aae-4b0e-814c-b6bb7f5f841c/project/cc1be56d-d095-4fdc-afae-f8dc39e06621)
+# Smart contract feature prototypes
 
-# My Open Code Box - Blockchain
+This is a open code box for smart contract development. A lot of features are tried here first and then integrated to [a main project](https://github.com/asunlabs/pawcon-monorepo).
 
-This is a open code box for blockchain learning material and mini projects by Jake Sung. Topics contain blockchain background knowledge, libraries(ethers.js, web3.js, openzeppelin), framework(hardhat, truffle), IPFS, Defi, NFT. And many more to come.
+## Prototype features
 
-## Mini projects
+1. Cloning contracts
+1. Swapping tokens
+1. Auction
+1. Enabling Cross chain
+1. DAO
+1. Timelock
+1. Oracle
+1. Non-upgradeable tokens: ERC20/721/777/1155
+1. Upgradeable tokens: ERC20/721/777
+1. Base64 on-chain encoding
+1. ECDSA verifying signature on-chain
+1. ERC165 supportsInterface
+1. SafeMath
+1. MerkleTree
+1. Multicall
 
-- [Simple upgradeable contract](https://github.com/developerasun/myCodeBox-blockchain/tree/main/projects/contracts/simpleUpgrades)
-- [ERC20 token swap](https://github.com/developerasun/myCodeBox-blockchain/tree/main/projects/contracts/tokenSwap)
-- [Upgradeable ERC20](https://github.com/developerasun/myCodeBox-blockchain/tree/main/projects/contracts/upgradableERC20)
-- [Upgradeable ERC721](https://github.com/developerasun/myCodeBox-blockchain/tree/main/projects/contracts/upgradableERC721)
+## Hardhat-deploy
+
+Create a deploy directory in root.
+
+```sh
+mkdir deploy
+```
+
+Add the directory in tsconfig.json.
+
+```json
+  "include": [
+    "./scripts",
+    "./test",
+    "./deploy"
+  ],
+```
+
+Run below command to deploy contracts.
+
+```sh
+pnpm exec hardhat deploy
+```
