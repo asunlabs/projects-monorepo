@@ -1,21 +1,22 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { ethers } from "hardhat";
 import hre from "hardhat";
-import { time, mineUpTo } from "@nomicfoundation/hardhat-network-helpers";
+import { time, mineUpTo, mine } from "@nomicfoundation/hardhat-network-helpers";
 import { VOTING_DELAY } from "../../deploy/02-deploy-time-lock";
 import fs from "fs";
+import path from "path";
 import chalk from "chalk";
 
 export const NEW_STORE_VALUE = 99;
 export const FUNC = "store";
-export const PROPOSAL_DESCRIPTION = "Proposal #1 99 in the Box!";
+export const PROPOSAL_DESCRIPTION = "Proposal #1 99 in the Box";
 export const developmentChains = ["hardhat", "localhost"];
-export const proposalsFile = "proposals.json";
+export const proposalJsonName = "proposals.json";
 
 // * running cmd: pnpm exec hardhat run scripts/governance/01-propose.ts --network localhost
 
-async function getContract(hre: HardhatRuntimeEnvironment) {
-  const { getNamedAccounts, deployments } = hre;
+export async function getContract(hre: HardhatRuntimeEnvironment) {
+  const { deployments } = hre;
   const { get } = deployments;
 
   const _governor = await get("MyGovernor");
@@ -55,10 +56,11 @@ export async function propose(functionToCall: string, args: any[], proposalDesc:
   if (developmentChains.includes(hre.network.name)) {
     // currently hardhat forking is enabled.
     const current = await time.latestBlock();
-    console.log(chalk.bgCyan("CURRENT BLOCK:"), current);
+    console.log(chalk.bgMagenta("CURRENT BLOCK:"), current);
 
     // Mines new blocks until the latest block number is blockNumber
-    await mineUpTo(current + VOTING_DELAY + 1);
+    await mine(VOTING_DELAY + 1);
+    console.log(chalk.bgCyan("MINED UP TO:"), await time.latestBlock());
   }
 
   /**
@@ -80,19 +82,27 @@ export async function propose(functionToCall: string, args: any[], proposalDesc:
   // ! @dev check props name correctly.
   const proposalId = proposeReceipt.events[0].args.proposalId;
 
-  console.log(proposalsFile);
+  const jsonFilePath = path.join(__dirname, "proposals.json");
+  console.log({ jsonFilePath });
 
-  // TODO fix SyntaxError: Unexpected end of JSON input at JSON.parse (<anonymous>)
-  let proposals = JSON.parse(fs.readFileSync("./proposals.json").toString());
-  console.log({ proposals });
+  fs.rm(jsonFilePath, (err) => {
+    if (err) throw new Error(err.message);
+  });
+
+  const jsonSpace = 4;
+  fs.writeFileSync(jsonFilePath, JSON.stringify({ 31337: [] }, null, jsonSpace));
+
+  const agenda = fs.readFileSync(jsonFilePath, { encoding: "utf-8" });
+  const agendaObject = JSON.parse(agenda);
 
   // track the proposals.json's prop and add proposal id.
-  proposals[hre.network.config.chainId!.toString()].push(proposalId.toString());
+  agendaObject[hre.network.config.chainId!.toString()].push(proposalId.toString());
 
   // overwrite the proposal.json
-  fs.writeFileSync("test.json", JSON.stringify(proposals));
+  // TODO add proposal id duplicates validation later
+  fs.writeFileSync(jsonFilePath, JSON.stringify(agendaObject));
 
-  console.log("proposal json updated", proposals);
+  console.log("proposal json updated", fs.readFileSync(jsonFilePath, { encoding: "utf-8" }));
 }
 
 propose(FUNC, [NEW_STORE_VALUE], PROPOSAL_DESCRIPTION)
