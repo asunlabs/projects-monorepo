@@ -50,10 +50,10 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     }
 
     function propose(
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        string memory description
+        address[] memory targets, // target contract address
+        uint256[] memory values, // value of ETH
+        bytes[] memory calldatas, // encodedFunctionData from ethersjs
+        string memory description // proposal description
     ) public override(Governor, IGovernor) returns (uint256) {
         return super.propose(targets, values, calldatas, description);
     }
