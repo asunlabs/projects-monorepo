@@ -2,7 +2,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import chalk from "chalk";
 import { ethers } from "hardhat";
-import { ADDRESS_ZERO } from "./02-deploy-time-lock";
+import { ADDRESS_ZERO } from "../gov-config";
 
 // run pnpm exec hardhat help to check newly added task: deploy
 // the deploy task is added using hardhat-deploy dep

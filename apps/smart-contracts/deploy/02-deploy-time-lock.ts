@@ -1,15 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import chalk from "chalk";
-
-// Governor Values
-export const MIN_DELAY = 3600; // 1 hour - after a vote passes, you have 1 hour before you can enact
-export const QUORUM_PERCENTAGE = 4; // Need 4% of voters to pass
-// export const VOTING_PERIOD = 45818 // 1 week - how long the vote lasts. This is pretty long even for local tests
-export const VOTING_PERIOD = 5; // blocks
-export const VOTING_DELAY = 1; // 1 Block - How many blocks till a proposal vote becomes active
-export const THRESHOLD = 0;
-export const ADDRESS_ZERO = "0x0000000000000000000000000000000000000000";
+import { MIN_DELAY } from "../gov-config";
 
 // run pnpm exec hardhat help to check newly added task: deploy
 // the deploy task is added using hardhat-deploy dep
@@ -20,12 +12,6 @@ const deployTimelock: DeployFunction = async function (hre: HardhatRuntimeEnviro
 
   console.log(chalk.bgMagenta("deploying timelock"));
 
-  /**
-   *    * MyTokenTimelock constructor args
-   *    1) uint256 minDelay,
-        2) address[] memory proposers,
-        3) address[] memory executors
-   */
   const myTimelock = await deploy("MyGovernorTimelock", {
     from: deployer,
     args: [MIN_DELAY, [], []],

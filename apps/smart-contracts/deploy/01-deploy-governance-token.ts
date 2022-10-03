@@ -6,11 +6,10 @@ import { ethers } from "hardhat";
 // run pnpm exec hardhat help to check newly added task: deploy
 // the deploy task is added using hardhat-deploy dep
 const deployGovernanceToken: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { getNamedAccounts, deployments, network } = hre;
-  const { deploy, log } = deployments;
+  const { getNamedAccounts, deployments } = hre;
+  const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  //   log("deploying governance token");
   console.log(chalk.bgMagenta("deploying governance token"));
 
   const GovernanceToken = await deploy("GovernanceToken", {
@@ -31,16 +30,11 @@ const deployGovernanceToken: DeployFunction = async function (hre: HardhatRuntim
 const delegate = async function (governanceTokenAddr: string, delegatedAccount: string) {
   const token = await ethers.getContractAt("GovernanceToken", governanceTokenAddr);
 
-  /**
-   * @dev Delegate votes from the sender to `delegatee`.
-   * @dev people votes based on checkpoints
-   * @dev initial governance token has no delegatee
-   */
   const tx = await token.delegate(delegatedAccount);
   const confirmationBlocksToWait = 1;
   await tx.wait(confirmationBlocksToWait);
 
-  console.log(chalk.bgCyan("Checkpoints after delegate: "), await token.numCheckpoints(delegatedAccount));
+  console.log(chalk.bgCyan("Checkpoints of delegatedAccount: "), await token.numCheckpoints(delegatedAccount));
 };
 
 export default deployGovernanceToken;

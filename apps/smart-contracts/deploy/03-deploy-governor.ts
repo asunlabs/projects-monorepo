@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import chalk from "chalk";
-import { QUORUM_PERCENTAGE, THRESHOLD, VOTING_DELAY, VOTING_PERIOD } from "./02-deploy-time-lock";
+import { QUORUM_PERCENTAGE, THRESHOLD, VOTING_DELAY, VOTING_PERIOD } from "../gov-config";
 
 // run pnpm exec hardhat help to check newly added task: deploy
 // the deploy task is added using hardhat-deploy dep
