@@ -101,6 +101,14 @@ const config: HardhatUserConfig = {
         enabled: true,
       },
       chainId: 31337,
+      // auto mining
+      // mining: {
+      //   auto: true,
+      //   interval: 2000, // 2 seconds per mining
+      //   mempool: {
+      //     order: "priority", // tx based on higher gas fee like Geth
+      //   },
+      // },
     },
     localhost: {
       chainId: 31337,
@@ -120,7 +128,7 @@ const config: HardhatUserConfig = {
           ? [ACCOUNT_SEPOLIA_PRIVATE_KEY]
           : [],
     },
-    // @deprecated
+    // ! @deprecated
     ropsten: {
       url: TEST_ROPSTEN_URL ? TEST_ROPSTEN_URL : "",
       accounts:
@@ -128,7 +136,7 @@ const config: HardhatUserConfig = {
           ? [ACCOUNT_ROPSTEN_PRIVATE_KEY]
           : [],
     },
-    // @deprecated
+    // ! @deprecated
     rinkeby: {
       url: TEST_RINKEBY_URL ? TEST_RINKEBY_URL : "",
       accounts:
@@ -136,7 +144,7 @@ const config: HardhatUserConfig = {
           ? [ACCOUNT_RINKEBY_PRIVATE_KEY]
           : [],
     },
-    // @deprecated
+    // ! @deprecated
     kovan: {
       url: TEST_KOVAN_URL ? TEST_KOVAN_URL : "",
       accounts:

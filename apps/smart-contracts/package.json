@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "custom": {
-    "hh": "pnpm exec hardhat"
+    "hh": "pnpm exec hardhat",
+    "gov": "pnpm exec hardhat run scripts/governance/"
   },
   "scripts": {
     "test:unit:dev": "nodemon -w test --exec mocha -g \"unit\" --slow 2000  --reporter list",
@@ -13,11 +14,19 @@
     "doc": "%npm_package_custom_hh% docgen",
     "tests": "%npm_package_custom_hh% test",
     "clean": "%npm_package_custom_hh% clean",
-    "compile": "%npm_package_custom_hh% compile"
+    "compile": "%npm_package_custom_hh% compile",
+    "gov:node:dev": "%npm_package_custom_hh% node",
+    "gov:propose:dev": "%npm_package_custom_gov%/01-propose.ts --network localhost",
+    "gov:vote:dev": "%npm_package_custom_gov%/02-vote.ts --network localhost",
+    "gov:execute:dev": "%npm_package_custom_gov%/03-queue-and-execute.ts --network localhost"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "email": "nellow1102@gmail.com",
+    "name": "Jake Sung(developerasun)",
+    "url": "https://github.com/developerasun"
+  },
+  "license": "MIT",
   "devDependencies": {
     "@chainlink/contracts": "^0.4.1",
     "@ethersproject/abi": "5.6.4",
