@@ -5,7 +5,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @dev contract to govern, agenda
 contract Box is Ownable {
-    uint256 private value;
+    // set initial value as 20
+    uint256 private value = 20;
 
     // Emitted when the stored value changes
     event ValueChanged(uint256 newValue);

@@ -9,6 +9,7 @@ contract GovernanceToken is ERC20, ERC20Permit, ERC20Votes {
     uint256 public maxSupply = uint256(1000000 * 10**decimals());
 
     constructor() ERC20("GovernanceToken", "GT") ERC20Permit("GovernanceToken") {
+        // _msgSender is preferred over msg.sender
         _mint(_msgSender(), maxSupply);
     }
 
