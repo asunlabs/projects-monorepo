@@ -11,7 +11,7 @@ contract MyFixedSupply is ERC20PresetFixedSupply {
         address owner
     ) ERC20PresetFixedSupply(name, symbol, initialSupply, owner) {}
 
-    function mint() external {
-        _mint(msg.sender, 100);
+    function mint(address to, uint256 amount) external {
+        _mint(to, amount);
     }
 }

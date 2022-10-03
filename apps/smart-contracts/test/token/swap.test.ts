@@ -25,7 +25,7 @@ const useFixture = async () => {
   };
 };
 
-describe.only(`${PREFIX}-functionality`, function () {
+describe(`${PREFIX}-functionality`, function () {
   it("Should fetch a correct name", async function TestDexName() {
     const { dex } = await loadFixture(useFixture);
     expect(await dex.name()).to.equal("Dex");

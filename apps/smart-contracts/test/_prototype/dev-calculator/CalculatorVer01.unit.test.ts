@@ -5,7 +5,7 @@ import { useImpersonatedSigner, useSnapshotForReset } from "../../../scripts/hoo
 
 const PREFIX = "unit-CalculatorVer01";
 describe(`${PREFIX}-functionality`, function TestFunctionality() {
-  it.skip("Should return a correct decimal", async function TestDecimal() {
+  it("Should return a correct decimal", async function TestDecimal() {
     const { contract } = await deployer("CalculatorVer01");
   });
 });

@@ -9,11 +9,10 @@ import deploy from "../../scripts/hooks/useDeployer";
 dotenv.config();
 
 const PREFIX = "unit-VRFv2Consumer";
-let contract: Contract;
 
 const useFixture = async () => {
   // use custom hook for contract deployment
-  contract = await deploy("VRFv2Consumer", [ORACLE.subscriptionId]);
+  const { contract } = await deploy("VRFv2Consumer", [ORACLE.subscriptionId]);
   // const VRFv2Consumer = await ethers.getContractFactory("VRFv2Consumer");
   // const vrfV2Consumer = await VRFv2Consumer.deploy(ORACLE.subscriptionId);
   // contract = await vrfV2Consumer.deployed();
@@ -23,7 +22,7 @@ const useFixture = async () => {
   };
 };
 
-describe.only(`${PREFIX}-functionality`, function TestFunctionality() {
+describe(`${PREFIX}-functionality`, function TestFunctionality() {
   it("Public vars should be zero", async function TestFixure() {
     const { contract } = await loadFixture(useFixture);
     expect(await contract.s_requestId()).to.equal(0);
