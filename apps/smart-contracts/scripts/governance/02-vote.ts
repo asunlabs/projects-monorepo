@@ -1,24 +1,11 @@
 import fs from "fs";
 import path from "path";
 import hre, { ethers } from "hardhat";
-import { developmentChains } from "./01-propose";
-import { mine, mineUpTo, time } from "@nomicfoundation/hardhat-network-helpers";
-import { VOTING_PERIOD } from "../../deploy/02-deploy-time-lock";
 import chalk from "chalk";
-import { network } from "hardhat";
+import { developmentChains, VOTING_PERIOD } from "../../gov-config";
+import { mine } from "@nomicfoundation/hardhat-network-helpers";
 
 // pnpm exec hardhat run scripts/governance/02-vote.ts --network localhost
-
-export async function moveBlocks(amount: number) {
-  console.log("Moving blocks...");
-  for (let index = 0; index < amount; index++) {
-    await network.provider.request({
-      method: "evm_mine",
-      params: [],
-    });
-  }
-  console.log(`Moved ${amount} blocks`);
-}
 
 const index = 0;
 
@@ -32,31 +19,25 @@ async function main(proposalIndex: number) {
   const voteWay = 1; // 0 = against, 1 = for, 2 = abstain
   const reason = "no reason";
 
-  /**
- * * castVoteWithReason function signature
- * function castVoteWithReason(
-        uint256 proposalId,
-        uint8 support,
-        string calldata reason
-    ) public virtual override returns (uint256)
- */
   const voteTxResponse = await governor.castVoteWithReason(proposalId, voteWay, reason);
   const confirmationBlocksToWait = 1;
   await voteTxResponse.wait(confirmationBlocksToWait);
 
-  // TODO fix proposal already exists error
-  // artificially move blocks for faster checking
-  if (developmentChains.includes(hre.network.name)) {
-    const current = await time.latestBlock();
-    console.log(chalk.bgMagenta("CURRENT BLOCK:"), current);
+  console.log(
+    chalk.bgCyan(
+      "proposal state when voting casted: ",
+      await governor.state("10967182955993030631666436770818595266186349297643790976074693315478415453599")
+    )
+  );
 
-    // Mines new blocks until the latest block number is blockNumber
+  if (developmentChains.includes(hre.network.name)) {
     await mine(VOTING_PERIOD + 1);
-    console.log(chalk.bgCyan("MINED UP TO:"), await time.latestBlock());
   }
 
-  console.log("voted finished");
-  console.log("proposal state should be 4 if voting succeeded: ", await governor.state(proposalId));
+  console.log(chalk.bgCyan("voting finished"));
+  console.log(
+    chalk.bgCyan("proposal state when mined: ", await governor.state("10967182955993030631666436770818595266186349297643790976074693315478415453599"))
+  );
 }
 
 // recommended hardhat error handling pattern
