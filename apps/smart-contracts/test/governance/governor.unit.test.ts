@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { Contract } from "ethers";
+import { BigNumber, Contract, Wallet } from "ethers";
 import { expect } from "chai";
 import { loadFixture, mine, time } from "@nomicfoundation/hardhat-network-helpers";
 import chalk from "chalk";
@@ -11,6 +11,20 @@ dotenv.config({ path: "../../.env.development" });
 const { ACCOUNT_GOERLI_PRIVATE_KEY, ACCOUNT_GOERLI_PUBLIC_ADDRESS } = process.env;
 
 const PREFIX = "unit-MyGovernor";
+
+function useWalletSigner(privateKey: string, _contract?: Contract) {
+  let contract;
+  const walletSigner = new ethers.Wallet(privateKey);
+
+  if (_contract !== undefined) {
+    // change network to wallet signer's network
+    contract = _contract.attach(walletSigner.address);
+  } else {
+    contract = "";
+  }
+
+  return { walletSigner, contract };
+}
 
 /**
  *
@@ -79,9 +93,27 @@ describe(`${PREFIX}-metadata`, async function TestGovernorSetup() {
     expect(await govenor.votingPeriod()).to.equal(votingPeriod);
   });
 
-  it.only("Should have a correct quorum", async function TestQuorum() {
+  it("Should have a correct quorum", async function TestQuorum() {
     const { govenor } = await loadFixture(useFixture);
     const { quorum, votingDelay } = useGovernorParams();
     const { timelock, governanceToken } = await useGovernorContractParams();
+  });
+});
+
+describe(`${PREFIX}-token-delegation`, async function TestDelegation() {
+  it.only("Should delegate and increase voting power", async function TestVotingDelegation() {
+    const { owner, recipient } = await loadFixture(useFixture);
+    const { governanceToken } = await useGovernorContractParams();
+    const { walletSigner } = useWalletSigner(ACCOUNT_GOERLI_PRIVATE_KEY!);
+
+    expect(await governanceToken.balanceOf(owner.address)).not.to.equal(0);
+    const ownerTokenBalance = (await governanceToken.balanceOf(owner.address)).toString();
+    console.log("deployer val: ", ownerTokenBalance);
+
+    console.log(await governanceToken.delegate(recipient.address));
+    expect((await governanceToken.getVotes(recipient.address)).toString()).to.equal(ownerTokenBalance);
+
+    // check how many delegation is done
+    expect(await governanceToken.numCheckpoints(recipient.address)).to.equal(1);
   });
 });
