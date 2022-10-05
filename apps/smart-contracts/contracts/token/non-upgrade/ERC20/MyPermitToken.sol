@@ -11,4 +11,10 @@ contract MyPermitToken is ERC20, ERC20Permit {
     function mint(address to, uint256 amount) external {
         _mint(to, amount);
     }
+
+    // enroll counter in storage and get a current counter
+    function getNonce(address account) public returns(uint256) {
+        uint256 nonce = super._useNonce(account);
+        return nonce;
+    }
 }
