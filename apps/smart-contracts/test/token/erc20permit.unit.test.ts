@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { BigNumber, Contract } from "ethers";
+import { Contract } from "ethers";
 import { expect } from "chai";
 import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
 import chalk from "chalk";
@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "../../.env.development" });
 
-const { ACCOUNT_GOERLI_PRIVATE_KEY } = process.env;
+const { ACCOUNT_GOERLI_PRIVATE_KEY, ACCOUNT_GOERLI_PUBLIC_ADDRESS } = process.env;
 
 const PREFIX = "unit-MyPermit";
 let vault: Contract;
@@ -31,8 +31,8 @@ const useFixture = async () => {
 };
 
 describe(`${PREFIX}-ERC20Permit/EIP712`, async function TestPermission() {
-  it.only("Should permit for a signer", async function TestERC20Permit() {
-    const { vault, erc20Token, owner, recipient } = await loadFixture(useFixture);
+  it("Should permit for a signer", async function TestERC20Permit() {
+    const { vault, erc20Token, owner } = await loadFixture(useFixture);
 
     // useERC20Permit.ts => setDeadline, getDeadline
     const oneMinute = time.duration.minutes(1);
@@ -44,9 +44,7 @@ describe(`${PREFIX}-ERC20Permit/EIP712`, async function TestPermission() {
 
     const mintAmount = ethers.utils.parseEther("1");
     await erc20Token.mint(signer.address, mintAmount);
-    // sign message
-    // await signer.// split signature
-    // permitted deposit to contract
+
     /**
      *  IERC20 token,
         uint256 deadline,
@@ -87,9 +85,26 @@ describe(`${PREFIX}-ERC20Permit/EIP712`, async function TestPermission() {
     const { v, r, s } = ethers.utils.splitSignature(signature);
 
     // TODO fix token balance not moved error
-    await vault.connect(signer).verifyPermissionAndTransfer(mintAmount, deadline, v, r, s);
-    console.log("signer token bal: ", BigInt(await erc20Token.balanceOf(signer.address)));
+    await expect(vault.connect(signer).verifyPermissionAndTransfer(mintAmount, deadline, v, r, s)).not.to.reverted;
+  });
 
-    console.log(await erc20Token.balanceOf(vault.address));
+  it("Should return a correct nonce", async function TestNonce() {
+    const { erc20Token, owner } = await loadFixture(useFixture);
+    const nonceTx = await erc20Token.getNonce(owner.address);
+    await nonceTx.wait(1);
+    // console.log({ nonceTx }); // tx object contains nonce, data, v, r, s
+
+    expect(nonceTx.nonce).to.equal((await owner.getTransactionCount()) - 1);
+  });
+
+  it("Should return a proper chain id", async function TestChainID() {
+    const { erc20Token, owner } = await loadFixture(useFixture);
+
+    const jakeSigner = new ethers.Wallet(ACCOUNT_GOERLI_PRIVATE_KEY!);
+    const _erc20Token = erc20Token.attach(jakeSigner.address);
+    const chainId = 31337;
+
+    expect((await _erc20Token.provider.getNetwork()).chainId).to.equal(chainId);
+    expect(await owner.getChainId()).to.equal((await _erc20Token.provider.getNetwork()).chainId);
   });
 });
