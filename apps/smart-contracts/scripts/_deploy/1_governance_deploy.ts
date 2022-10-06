@@ -1,4 +1,5 @@
 import deploy from "../hooks/useDeployer";
+import { verifier } from "../hooks/useVerify";
 
 // sample deploying script using a custom hook
 // deploy CMD: pnpm exec hardhat run scripts/_deploy/1_governance_deploy.ts --network goerli
@@ -10,7 +11,8 @@ async function main() {
   // iterate an array and deploy all
   for (let index = 0; index < FEATURE_GOVERNANCE.length; index++) {
     const contractName = FEATURE_GOVERNANCE[index];
-    await deploy(contractName);
+    const { contract } = await deploy(contractName);
+    await verifier(contract.address);
   }
 }
 
