@@ -59,6 +59,16 @@ ipfs name publish -k test yy123
 ipfs get /ipns/aa00
 ```
 
+## Example
+
+```
+key: k51qzi5uqu5dj01kmao45nsbdyo0ffndcwrx7l6h9x73rjcpg8a180odcgz7cz
+
+k51qzi5uqu5dj01kmao45nsbdyo0ffndcwrx7l6h9x73rjcpg8a180odcgz7cz: /ipfs/QmarWQ2trPqnvgRVFPqz5U7ATQ8DkJyrtvwjU3m2e82qPN
+
+ipfs get /ipns/key => returns the latest ipns object
+```
+
 ## Reference
 
 - [IPFS: How to add a file to an existing folder?](https://stackoverflow.com/questions/39803954/ipfs-how-to-add-a-file-to-an-existing-folder)
