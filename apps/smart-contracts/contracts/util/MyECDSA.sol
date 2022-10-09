@@ -12,6 +12,10 @@ contract MyECDSA {
      * get signature with ethers js, for example, 
      const hashedMessage = ethers.utils.hashMessage('jake') // hashedData
      const signature = address.signMessage(hashedMessage)
+
+     * metamask/eth-sig-util's personal sign appends eth sign prefix: \x19Ethereum Signed Message:\n32
+     * ethers.utils.hashMessage appends eth sign prefix: \x19Ethereum Signed Message:\n 
+     
      */
     function verify(
         bytes32 hashedData,
