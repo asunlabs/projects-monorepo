@@ -16,6 +16,7 @@ importers:
       '@ethersproject/abi': 5.6.4
       '@ethersproject/bytes': ^5.6.1
       '@ethersproject/providers': ^5.6.8
+      '@metamask/eth-sig-util': ^5.0.0
       '@nomicfoundation/hardhat-chai-matchers': ^1.0.2
       '@nomicfoundation/hardhat-network-helpers': ^1.0.3
       '@nomiclabs/hardhat-ethers': 2.0.0
@@ -58,6 +59,7 @@ importers:
       '@ethersproject/abi': 5.6.4
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/providers': 5.6.8
+      '@metamask/eth-sig-util': 5.0.0
       '@nomicfoundation/hardhat-chai-matchers': 1.0.2_j3pvy6iu7k33gnqrwaa7f4ivtq
       '@nomicfoundation/hardhat-network-helpers': 1.0.3_hardhat@2.9.9
       '@nomiclabs/hardhat-ethers': 2.0.0_ethers@5.7.1+hardhat@2.9.9
@@ -190,11 +192,25 @@ packages:
       miller-rabin: 4.0.1
     dev: true
 
+  /@ethereumjs/rlp/4.0.0:
+    resolution: {integrity: sha512-LM4jS5n33bJN60fM5EC8VeyhUgga6/DjCPBV2vWjnfVtobqtOiNC4SQ1MRFqyBSmJGGdB533JZWewyvlcdJtkQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /@ethereumjs/tx/3.5.2:
     resolution: {integrity: sha512-gQDNJWKrSDGu2w7w0PzVXVBNMzb7wwdDOmOqczmhNjqFxFuIbhVJDwiGEnxFNC2/b8ifcZzY7MLcluizohRzNw==}
     dependencies:
       '@ethereumjs/common': 2.6.5
       ethereumjs-util: 7.1.5
+    dev: true
+
+  /@ethereumjs/util/8.0.0:
+    resolution: {integrity: sha512-Zz/Ovar0VU/CaYHLvigBTjG5PmkG0OzjvRjjoXRJbJcdWJoTCN2N4BYgoCBOZomKjaAT4ABpQ7wer6ZFOglvjg==}
+    engines: {node: '>=14'}
+    dependencies:
+      '@ethereumjs/rlp': 4.0.0
+      ethereum-cryptography: 1.1.2
     dev: true
 
   /@ethereumjs/vm/5.9.3:
@@ -775,12 +791,28 @@ packages:
       tweetnacl-util: 0.15.1
     dev: true
 
+  /@metamask/eth-sig-util/5.0.0:
+    resolution: {integrity: sha512-wBOfkmPJoQG3c6kfxxJxQKfzxqSVtMxRjMD4C6xNtGU+TEuBacC3jIgjUUPlC5MTWu4XFo1Y8VWrmc1AlwAitA==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@ethereumjs/util': 8.0.0
+      bn.js: 4.11.8
+      ethereum-cryptography: 1.1.2
+      ethjs-util: 0.1.6
+      tweetnacl: 1.0.3
+      tweetnacl-util: 0.15.1
+    dev: true
+
   /@noble/hashes/1.1.2:
     resolution: {integrity: sha512-KYRCASVTv6aeUi1tsF8/vpyR7zpfs3FUzy2Jqm+MU+LmUKhQ0y2FpfwqkCcxSg2ua4GALJd8k2R76WxwZGbQpA==}
     dev: true
 
   /@noble/secp256k1/1.6.2:
     resolution: {integrity: sha512-4AmNQqf+ysJx67kw3SMiPQl/JMjGB97dRGvAmwEu7txbY8B8FAHanQ0V9+i2b1ti+uQt5Cs9OByeDrFOaN1kjw==}
+    dev: true
+
+  /@noble/secp256k1/1.6.3:
+    resolution: {integrity: sha512-T04e4iTurVy7I8Sw4+c5OSN9/RkPlo1uKxAomtxQNLq8j1uPAqnsqG1bqvY3Jv7c13gyr6dui0zmh/I3+f/JaQ==}
     dev: true
 
   /@nodelib/fs.scandir/2.1.5:
@@ -916,7 +948,7 @@ packages:
     resolution: {integrity: sha512-ftTW3kKX54YXLCxH6BB7oEEoJfoE2pIgw7MINKAs5PsS6nqKPuKk1haTF/EuHmYqG330t5GSrdmtRuHaY1a62Q==}
     dependencies:
       '@noble/hashes': 1.1.2
-      '@noble/secp256k1': 1.6.2
+      '@noble/secp256k1': 1.6.3
       '@scure/base': 1.1.1
     dev: true
 
@@ -1665,6 +1697,10 @@ packages:
 
   /bn.js/4.11.6:
     resolution: {integrity: sha512-XWwnNNFCuuSQ0m3r3C4LE3EiORltHd9M05pq6FOlVeiophzRbMo50Sbz1ehl8K3Z+jw9+vmgnXefY1hz8X+2wA==}
+    dev: true
+
+  /bn.js/4.11.8:
+    resolution: {integrity: sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==}
     dev: true
 
   /bn.js/4.12.0:
@@ -3019,6 +3055,15 @@ packages:
     dependencies:
       '@noble/hashes': 1.1.2
       '@noble/secp256k1': 1.6.2
+      '@scure/bip32': 1.1.0
+      '@scure/bip39': 1.1.0
+    dev: true
+
+  /ethereum-cryptography/1.1.2:
+    resolution: {integrity: sha512-XDSJlg4BD+hq9N2FjvotwUET9Tfxpxc3kWGE2AqUG5vcbeunnbImVk3cj6e/xT3phdW21mE8R5IugU4fspQDcQ==}
+    dependencies:
+      '@noble/hashes': 1.1.2
+      '@noble/secp256k1': 1.6.3
       '@scure/bip32': 1.1.0
       '@scure/bip39': 1.1.0
     dev: true
