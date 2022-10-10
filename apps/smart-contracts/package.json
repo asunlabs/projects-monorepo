@@ -63,6 +63,7 @@
     "hardhat": "2.9.9",
     "hardhat-deploy": "^0.11.15",
     "hardhat-gas-reporter": "^1.0.8",
+    "merkletreejs": "^0.2.32",
     "mocha": "^10.0.0",
     "nodemon": "^2.0.19",
     "solidity-coverage": "^0.7.21",

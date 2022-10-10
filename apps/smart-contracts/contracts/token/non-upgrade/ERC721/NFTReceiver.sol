@@ -3,8 +3,8 @@ pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract Linus is ERC721 {
-    constructor() ERC721("Linus", "LN") {}
+contract NFTReceiver is ERC721 {
+    constructor() ERC721("NFTReceiver", "LN") {}
 
     struct NFT {
         address operator;

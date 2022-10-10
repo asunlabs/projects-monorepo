@@ -101,7 +101,7 @@ describe(`${PREFIX}-metadata`, async function TestGovernorSetup() {
 });
 
 describe(`${PREFIX}-token-delegation`, async function TestDelegation() {
-  it.only("Should delegate and increase voting power", async function TestVotingDelegation() {
+  it("Should delegate and increase voting power", async function TestVotingDelegation() {
     const { owner, recipient } = await loadFixture(useFixture);
     const { governanceToken } = await useGovernorContractParams();
     const { walletSigner } = useWalletSigner(ACCOUNT_GOERLI_PRIVATE_KEY!);
