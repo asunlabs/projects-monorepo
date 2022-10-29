@@ -1,0 +1,21 @@
+{
+  "name": "slack-bot",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sync": "envbot"
+  },
+  "keywords": [],
+  "author": "Jake Sung(developerasun)",
+  "license": "MIT",
+  "envbot": {
+    "channel": "_실험-무지개-털빛-고양이",
+    "include": [
+      "*"
+    ]
+  },
+  "devDependencies": {
+    "sync-dotenv-slack": "^0.1.0"
+  }
+}
