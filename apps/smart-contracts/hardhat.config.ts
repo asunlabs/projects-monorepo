@@ -23,6 +23,7 @@ const {
   TEST_ROPSTEN_URL,
   TEST_RINKEBY_URL,
   TEST_KOVAN_URL,
+  TEST_MUMBAI_HTTP,
 
   MAIN_ETHEREUM_URL,
   FORK_MAINNET_URL,
@@ -34,6 +35,7 @@ const {
   ACCOUNT_ROPSTEN_PRIVATE_KEY,
   ACCOUNT_RINKEBY_PRIVATE_KEY,
   ACCOUNT_KOVAN_PRIVATE_KEY,
+  ACCOUNT_MUMBAI_PRIVATE_KEY,
 
   ACCOUNT_DEPLOYER_PRIVATE_KEY,
   ACCOUNT_DEPLOYER_ADDRESS,
@@ -41,6 +43,7 @@ const {
   API_COINMARKETCAP_KEY,
   API_ETHERSCAN_KEY,
   API_ETHERSCAN_BACKUP_KEY,
+  API_POLYGONSCAN_KEY,
 } = process.env;
 
 const options = {
@@ -75,12 +78,6 @@ const config: HardhatUserConfig = {
         ...options,
       };
     }),
-  },
-  // hardhat-deploy
-  namedAccounts: {
-    deployer: {
-      default: 0,
-    },
   },
   networks: {
     // JSON-RPC based network
@@ -152,6 +149,13 @@ const config: HardhatUserConfig = {
           ? [ACCOUNT_KOVAN_PRIVATE_KEY]
           : [],
     },
+    mumbai: {
+      url: TEST_MUMBAI_HTTP !== undefined ? TEST_MUMBAI_HTTP : "",
+      accounts:
+        ACCOUNT_MUMBAI_PRIVATE_KEY !== undefined
+          ? [ACCOUNT_MUMBAI_PRIVATE_KEY]
+          : [],
+    },
   },
   paths: {
     artifacts: "./artifacts",
@@ -172,6 +176,8 @@ const config: HardhatUserConfig = {
       ropsten: API_ETHERSCAN_KEY !== undefined ? API_ETHERSCAN_KEY : "",
       rinkeby:
         API_ETHERSCAN_BACKUP_KEY !== undefined ? API_ETHERSCAN_BACKUP_KEY : "",
+      polygonMumbai:
+        API_POLYGONSCAN_KEY !== undefined ? API_POLYGONSCAN_KEY : "",
     },
   },
   typechain: {
