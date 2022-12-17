@@ -12,7 +12,8 @@
   "include": [
     "./scripts",
     "./test",
-    "./deploy"
+    "./deploy",
+    "./hardhat-env.d.ts"
   ],
   "exclude": [
     "./contracts/reference"
